@@ -1,4 +1,4 @@
-﻿using Car_Rental_Portal_Project_MVC.Models;
+﻿using Car_Rental_Portal_Project_MVC.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
