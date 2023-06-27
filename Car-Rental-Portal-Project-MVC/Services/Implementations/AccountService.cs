@@ -67,10 +67,11 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
                 var Minutes = time.Value.Minutes;
                 string ErrorMessage = $"Hello {user.Email}. Your Account is Locked for {Minutes} Minutes {Seconds} seconds";
 
+                response.IsLockedOut = true;
                 response.Data = model;
                 response.Message = ErrorMessage;
             }
-            return 
+            return response;
             
         }
 

@@ -10,6 +10,8 @@
         public string Description { get; set; } = string.Empty;
         //here you can check if response was successful or not.
         public bool success { get; set; } = true;
+        //lockout
+        public bool IsLockedOut { get; set; } = false;
 
     }
 }

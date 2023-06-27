@@ -73,32 +73,19 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         {
             ViewData["ReturnUrl"] = ReturnUrl;
             ReturnUrl = ReturnUrl ?? Url.Content("~/");
-            if (ModelState.IsValid)
+            var response = await _accountService.LogIn(model);
+            if (response.success)
             {
-                var result = await _signinManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
-                if (result.Succeeded)
-                {
-                    var user = _db.AplicationUsers.FirstOrDefault(x => x.Email.ToLower() == model.Email.ToLower());
-                    var claims = await _userManager.GetClaimsAsync(user);
-                    if (claims.Count > 0)
-                    {
-                        await _userManager.RemoveClaimAsync(user, claims.FirstOrDefault(x => x.Type == "FirstName"));
-                    }
-                    await _userManager.AddClaimAsync(user, new Claim("FirstName", user.Name));
-                    return LocalRedirect(ReturnUrl);
-                }
-                else if (result.IsLockedOut)
-                {
-                    var user = _db.AplicationUsers.FirstOrDefault(u => u.Email == model.Email);
-                    var time = user.LockoutEnd - DateTime.UtcNow;
-                    var Seconds = time.Value.Seconds;
-                    var Minutes = time.Value.Minutes;
-                    string ErrorMessage = $"Hello {user.Email}. Your Account is Locked for {Minutes} Minutes {Seconds} seconds";
-                    ModelState.AddModelError(string.Empty, ErrorMessage);
-                    return View(model);
-                }
+                return LocalRedirect(ReturnUrl);
             }
-            return RedirectToAction("Login");
+            else if (response.IsLockedOut)
+            {
+                return View(model);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
     }
