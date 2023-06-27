@@ -1,5 +1,6 @@
 ﻿using Car_Rental_Portal_Project_MVC.Data;
 using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
+using Car_Rental_Portal_Project_MVC.Services.Implementations;
 using Car_Rental_Portal_Project_MVC.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,17 +18,14 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         public readonly ApplicationDbContext _db;
 
 
-        public AccountController(UserManager<IdentityUser> usermanager, SignInManager<IdentityUser> signinmanager, ApplicationDbContext db)
+        public AccountController(UserManager<IdentityUser> usermanager, SignInManager<IdentityUser> signinmanager, ApplicationDbContext db, IAccountService accountService)
         {
             _userManager = usermanager;
             _signinManager = signinmanager;
-            _db = db;        
-        }
-        public AccountController(IAccountService accountService)
-        {
+            _db = db;
             _accountService = accountService;
-        }
 
+        }
         [HttpGet]
         public async Task<IActionResult> Register(string? returnUrl = null)
         {
