@@ -119,7 +119,7 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
                     //SUCCESS
                     await _signinManager.SignInAsync(User, isPersistent: false);
                     response.Data = model;
-                    response.Message = $"Successfully Registered {model.Name} into database.";
+                    response.Message = $"Successfully Registered {model.Name} into database!!";
                     response.Description = $"bla bla";
                     return response;
                 }
