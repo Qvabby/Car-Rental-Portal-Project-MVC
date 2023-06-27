@@ -4,6 +4,7 @@ using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
 using Car_Rental_Portal_Project_MVC.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 
 namespace Car_Rental_Portal_Project_MVC.Services.Implementations
@@ -20,6 +21,57 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
             _signinManager = signinManager;
             _db = db;
             _urlEncoder = urlEncoder;
+        }
+
+        public async Task<ServiceResponse<LoginViewModel>> LogIn()
+        {
+            var response = new ServiceResponse<LoginViewModel>();
+            try
+            {
+                //Login GET FUNCTIONALITY
+                var loginViewModel = new LoginViewModel();
+
+                response.Data = loginViewModel;
+                response.Message = $"Succesfully Created Register View Model, and Returned returnURL.";
+
+                return response;
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+                response.success = false;
+                response.Description = e.InnerException.Message;
+                return response;
+            }
+
+        }
+
+        public async Task<ServiceResponse<LoginViewModel>> LogIn(LoginViewModel model)
+        {
+            var response = new ServiceResponse<LoginViewModel>();
+
+            var result = await _signinManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
+            if (result.Succeeded)
+            {
+                var user = _db.AplicationUsers.FirstOrDefault(x => x.Email.ToLower() == model.Email.ToLower());
+
+                response.Data = model;
+                response.Message = $"Successfully Logged in";
+                return response;
+            }
+            else if (result.IsLockedOut)
+            {
+                var user = _db.AplicationUsers.FirstOrDefault(u => u.Email == model.Email);
+                var time = user.LockoutEnd - DateTime.UtcNow;
+                var Seconds = time.Value.Seconds;
+                var Minutes = time.Value.Minutes;
+                string ErrorMessage = $"Hello {user.Email}. Your Account is Locked for {Minutes} Minutes {Seconds} seconds";
+
+                response.Data = model;
+                response.Message = ErrorMessage;
+            }
+            return 
+            
         }
 
         //REGISTER GET
