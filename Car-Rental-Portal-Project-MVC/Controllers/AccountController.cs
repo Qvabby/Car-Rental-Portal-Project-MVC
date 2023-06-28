@@ -2,6 +2,7 @@
 using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
 using Car_Rental_Portal_Project_MVC.Services.Implementations;
 using Car_Rental_Portal_Project_MVC.Services.Interfaces;
+using identityStep.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

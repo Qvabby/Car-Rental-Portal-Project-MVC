@@ -26,6 +26,17 @@ namespace Car_Rental_Portal_Project_MVC
                 options.UseSqlServer(builder.Configuration.GetConnectionString("CarRentalConnection"))
 
             );
+
+
+            builder.Services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "193979039961-k4pkpocougkrrb5llu9sovd3fdh612c2.apps.googleusercontent.com";
+                options.ClientSecret = "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";
+            }
+               );
+
+
+
             //Adding Identity To Application.
             builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             //Configuring Identity Options to Application.

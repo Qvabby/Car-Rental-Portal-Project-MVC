@@ -1,4 +1,5 @@
 ﻿using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
+using identityStep.Models;
 
 namespace Car_Rental_Portal_Project_MVC.Services.Interfaces
 {
