@@ -1,4 +1,5 @@
-﻿using Car_Rental_Portal_Project_MVC.Data;
+﻿using AutoMapper;
+using Car_Rental_Portal_Project_MVC.Data;
 using Car_Rental_Portal_Project_MVC.Models;
 using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
 using Car_Rental_Portal_Project_MVC.Services.Interfaces;
@@ -16,73 +17,78 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
         public readonly SignInManager<IdentityUser> _signinManager;
         public readonly ApplicationDbContext _db;
         private readonly UrlEncoder _urlEncoder;
-        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signinManager, ApplicationDbContext db, UrlEncoder urlEncoder)
+        private readonly IMapper _mapper;
+        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signinManager, ApplicationDbContext db, UrlEncoder urlEncoder, IMapper mapper)
         {
             _userManager = userManager;
             _signinManager = signinManager;
             _db = db;
             _urlEncoder = urlEncoder;
+            _mapper = mapper;
         }
-
-        public async Task<ServiceResponse<LoginViewModel>> LogIn()
+        /// <summary>
+        /// This is Account Login Method, Used to Log In user using parameter "LoginViewModel" model.
+        /// </summary>
+        /// <param name="model"> Login View Model. </param>
+        /// <returns></returns>
+        public async Task<ServiceResponse<LoginViewModel>> LogIn(LoginViewModel model)
         {
+            //Creating Response.
             var response = new ServiceResponse<LoginViewModel>();
+            //Trying To Log in the user.
+            var result = await _signinManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
+            //Getting User From Database.
+            var user = _db.AplicationUsers.FirstOrDefault(x => x.UserName.ToLower() == model.Username.ToLower());
             try
             {
-                //Login GET FUNCTIONALITY
-                var loginViewModel = new LoginViewModel();
+                if (result.Succeeded)
+                {
+                    //if User has been signed in.
+                    response.Data = model;
+                    response.Message = $"Successfully Logged in";
+                    return response;
+                }
+                else if (result.IsLockedOut)
+                {
+                    //If User is blocked.
+                    var time = user.LockoutEnd - DateTime.UtcNow;
+                    var Seconds = time.Value.Seconds;
+                    var Minutes = time.Value.Minutes;
+                    string ErrorMessage = $"Hello {user.Email}. Your Account is Locked for {Minutes} Minutes {Seconds} seconds";
 
-                response.Data = loginViewModel;
-                response.Message = $"Succesfully Created Register View Model, and Returned returnURL.";
-
-                return response;
+                    response.success = false;
+                    response.IsLockedOut = true;
+                    response.Data = model;
+                    response.Message = ErrorMessage;
+                    return response;
+                }
             }
             catch (Exception e)
             {
-                response.Message = e.Message;
+                //if Exception happened.
                 response.success = false;
-                response.Description = e.InnerException.Message;
+                response.Message = e.Message;
+                response.Description = e.Source;
                 return response;
             }
-
-        }
-
-        public async Task<ServiceResponse<LoginViewModel>> LogIn(LoginViewModel model)
-        {
-            var response = new ServiceResponse<LoginViewModel>();
-
-            var result = await _signinManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
-            if (result.Succeeded)
-            {
-                var user = _db.AplicationUsers.FirstOrDefault(x => x.Email.ToLower() == model.Email.ToLower());
-
-                response.Data = model;
-                response.Message = $"Successfully Logged in";
-                return response;
-            }
-            else if (result.IsLockedOut)
-            {
-                var user = _db.AplicationUsers.FirstOrDefault(u => u.Email == model.Email);
-                var time = user.LockoutEnd - DateTime.UtcNow;
-                var Seconds = time.Value.Seconds;
-                var Minutes = time.Value.Minutes;
-                string ErrorMessage = $"Hello {user.Email}. Your Account is Locked for {Minutes} Minutes {Seconds} seconds";
-
-                response.IsLockedOut = true;
-                response.Data = model;
-                response.Message = ErrorMessage;
-            }
+            //else.
+            response.success = false;
+            response.Message = $"We couldn't Log {model.Username} in.";
+            response.Description = result.ToString();
             return response;
             
         }
 
-        //REGISTER GET
+        /// <summary>
+        /// Register GET method, used to draw Registers' View.
+        /// </summary>
+        /// <returns></returns>
         public async Task<ServiceResponse<RegisterViewModel>> Register()
         {
             var response = new ServiceResponse<RegisterViewModel>();
             try
             {
-                //REGISTER GET FUNCTIONALITY
+                //Creating ViewModel (in case we have claims etc.)
                 var registerViewModel = new RegisterViewModel();
                 
                 response.Data = registerViewModel;
@@ -92,6 +98,7 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
             }
             catch (Exception e)
             {
+                //if exception.
                 response.Message = e.Message;
                 response.success = false;
                 response.Description = e.InnerException.Message;
@@ -99,20 +106,19 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
             }
         }
 
+        /// <summary>
+        /// Register POST method, Which is used to register User, using RegisterViewModel Parameter.
+        /// </summary>
+        /// <param name="model"> Register View Model </param>
+        /// <returns></returns>
         public async Task<ServiceResponse<RegisterViewModel>> Register(RegisterViewModel model)
         {
+            //Creating Response
             var response = new ServiceResponse<RegisterViewModel>();
             try
             {
                 //creating User
-                var User = new ApplicationUser 
-                { 
-                    UserName = model.Username, 
-                    Email = model.Email, 
-                    Name = model.Name, 
-                    LastName = model.LastName,
-                    PhoneNumber = model.PhoneNumber,
-                };
+                var User = _mapper.Map<ApplicationUser>(model);
                 //Registering.
                 var result = await _userManager.CreateAsync(User, model.Password);
                 if (result.Succeeded)
@@ -132,6 +138,7 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
             }
             catch (Exception e)
             {
+                //If Exception Occurs.
                 response.Message = e.Message;
                 response.success = false;
                 response.Description = e.InnerException.Message;

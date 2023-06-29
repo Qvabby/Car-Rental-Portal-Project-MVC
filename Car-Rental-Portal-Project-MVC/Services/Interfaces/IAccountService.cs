@@ -9,8 +9,6 @@ namespace Car_Rental_Portal_Project_MVC.Services.Interfaces
         Task<ServiceResponse<RegisterViewModel>> Register();
         //post
         Task<ServiceResponse<RegisterViewModel>> Register(RegisterViewModel model);
-        //get
-        Task<ServiceResponse<LoginViewModel>> LogIn();
         //post
         Task<ServiceResponse<LoginViewModel>> LogIn(LoginViewModel model);
     }

@@ -30,17 +30,19 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Register(string? returnUrl = null)
         {
-            //FIRST WE ARE DOING THE FUNCTIONILITY AND RETURNING RESPONSE FROM THE SERVICE.
+            //Getting Response from Registers' GET service method.
             var response = await _accountService.Register();
             if (response.success)
             {
-                //SECOND WE DO ALL THE WEB THING IN CONTROLLER IF NEEDED.
+                //In case response was successful.
+                //ReturnURL.
                 ViewData["ReturnUrl"] = returnUrl;
-                //LASTLY RETURNING.
+                //returning View
                 return View(response.Data);
             }
             else
             {
+                //else.
                 return NotFound();
             }
             
@@ -48,14 +50,16 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            
+            //Getting Response from Services' Register Method.
             var response = await _accountService.Register(model);
             if (response.success)
             {
-                return RedirectToAction("Home", "Index");
+                //in case response was successful. (user was registered)
+                return RedirectToAction("Index", "Home");
             }
             else
             {
+                //else.
                 return NotFound();
             }
         }
@@ -63,6 +67,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         [AllowAnonymous]
         public IActionResult Login(string? ReturnUrl = null)
         {
+            //ReturnUrl
             ViewData["ReturnUrl"] = ReturnUrl;
             return View();
         }
@@ -70,21 +75,35 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model, string? ReturnUrl = null)
         {
+            //ReturnURL
             ViewData["ReturnUrl"] = ReturnUrl;
             ReturnUrl = ReturnUrl ?? Url.Content("~/");
-            var response = await _accountService.LogIn(model);
-            if (response.success)
+            //Checking ModelState
+            if (ModelState.IsValid)
             {
-                return LocalRedirect(ReturnUrl);
+                //Getting Response From Service Login Method
+                var response = await _accountService.LogIn(model);
+                if (response.success)
+                {
+                    //If response was successful.
+                    return LocalRedirect(ReturnUrl);
+                }
+                else if (response.IsLockedOut)
+                {
+                    //if we have lockout.
+                    return View(model);
+                }
             }
-            else if (response.IsLockedOut)
-            {
-                return View(model);
-            }
-            else
-            {
-                return NotFound();
-            }
+            //else.
+            return NotFound();
+        }
+        [HttpPost]
+        public async Task<IActionResult> LogOut()
+        {
+            //signing out any user.
+            await _signinManager.SignOutAsync();
+            //redirecting to Home Controllers' Index Method.
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
     }

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Car_Rental_Portal_Project_MVC.Models;
+using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
 
 namespace Car_Rental_Portal_Project_MVC
 {
@@ -7,6 +9,7 @@ namespace Car_Rental_Portal_Project_MVC
         public MappingProfile()
         {
             //Syntax - CreateMap< , >().ReverseMap();
+            CreateMap<RegisterViewModel, ApplicationUser>().ReverseMap();
         }
     }
 }
