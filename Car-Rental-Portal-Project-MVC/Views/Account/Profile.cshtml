@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject UserManager<IdentityUser> UserManager
+<div class="row">
+    <div class="col-12">
+        <h4 class="display-6">
+            Welcome To Your Profile
+        </h4>
+    </div>
+    <hr />
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center text-black">
+                    @UserManager.GetUserName(User)
+                </h5>
+            </div>
+            <div class="card-body">
+
+            </div>
+            <div class="card-footer">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="col-12">
+            <h5 class="text-center">
+                Your Cars.
+            </h5>
+        </div>
+    </div>
+</div>

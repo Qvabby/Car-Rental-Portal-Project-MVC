@@ -11,6 +11,7 @@ using System.Text.Encodings.Web;
 
 namespace Car_Rental_Portal_Project_MVC.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
@@ -28,6 +29,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
 
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(string? returnUrl = null)
         {
             //Getting Response from Registers' GET service method.
@@ -48,6 +50,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             
         }
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             //Getting Response from Services' Register Method.
@@ -104,6 +107,11 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             await _signinManager.SignOutAsync();
             //redirecting to Home Controllers' Index Method.
             return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            return View();
         }
 
     }
