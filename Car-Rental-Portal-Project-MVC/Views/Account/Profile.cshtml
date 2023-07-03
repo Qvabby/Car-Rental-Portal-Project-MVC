@@ -1,5 +1,8 @@
-﻿@using Microsoft.AspNetCore.Identity;
+﻿@using Car_Rental_Portal_Project_MVC.Data;
+@using Microsoft.AspNetCore.Identity
 @inject UserManager<IdentityUser> UserManager
+@inject ApplicationDbContext _db;
+
 <div class="row">
     <div class="col-12">
         <h4 class="display-6">
@@ -9,24 +12,59 @@
     <hr />
     <div class="col-4">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header bg-dark text-white">
                 <h5 class="text-center text-black">
                     @UserManager.GetUserName(User)
                 </h5>
             </div>
-            <div class="card-body">
+            @{
+                var Id = UserManager.GetUserId(User);
+                var DBuser = _db.AplicationUsers.FirstOrDefault(x => x.Id == Id);
+                <div class="card-body">
+                    <h6>Information:</h6>
+                    <p>Username: @DBuser.UserName</p>
+                    <p>Full Name: @DBuser.Name @DBuser.LastName </p>
+                    <p>Email: @DBuser.Email</p>
+                    <p>Phone: @DBuser.PhoneNumber</p>
 
-            </div>
-            <div class="card-footer">
-
-            </div>
+                    
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-warning">Edit Profile</a>
+                </div>
+            }
+            
         </div>
     </div>
     <div class="col-8">
         <div class="col-12">
             <h5 class="text-center">
-                Your Cars.
+                Your Cars
             </h5>
+        </div>
+        <div class="row">
+            <!--CARS LOOP NEEDED HERE.-->
+            <div class="col-4">
+                <div class="card">
+                    <img src="car1.jpg" class="card-img-top" alt="Car Image">
+                    <div class="card-body">
+                        <h6 class="card-title">Car Name 1</h6>
+                        <p class="card-text">Description of Car 1</p>
+                        <a href="#" class="btn btn-primary">Rent Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <img src="car2.jpg" class="card-img-top" alt="Car Image">
+                    <div class="card-body">
+                        <h6 class="card-title">Car Name 2</h6>
+                        <p class="card-text">Description of Car 2</p>
+                        <a href="#" class="btn btn-primary">Rent Now</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more car cards here -->
         </div>
     </div>
 </div>
