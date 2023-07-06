@@ -100,6 +100,7 @@ namespace Car_Rental_Portal_Project_MVC
             // builder.Services.AddScoped<>();
             //------------------------------------------------------------------------------------------------------------------------
             builder.Services.AddScoped<IAccountService, AccountService>();
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
             #endregion
 
             //building App.

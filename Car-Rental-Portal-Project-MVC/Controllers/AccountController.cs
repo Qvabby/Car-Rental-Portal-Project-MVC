@@ -18,17 +18,18 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         public readonly UserManager<IdentityUser> _userManager;
         public readonly SignInManager<IdentityUser> _signinManager;
         public readonly ApplicationDbContext _db;
+        public readonly IEmaiService _emaiService;
 
 
-        public AccountController(UserManager<IdentityUser> usermanager, SignInManager<IdentityUser> signinmanager, ApplicationDbContext db, IAccountService accountService)
-        {
-            _userManager = usermanager;
-            _signinManager = signinmanager;
-            _db = db;
-            _accountService = accountService;
-
-        }
-        [HttpGet]
+		public AccountController(UserManager<IdentityUser> usermanager, SignInManager<IdentityUser> signinmanager, ApplicationDbContext db, IAccountService accountService, IEmaiService emaiService)
+		{
+			_userManager = usermanager;
+			_signinManager = signinmanager;
+			_db = db;
+			_accountService = accountService;
+			_emaiService = emaiService;
+		}
+		[HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Register(string? returnUrl = null)
         {
@@ -47,7 +48,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
                 //else.
                 return NotFound();
             }
-            
+
         }
         [HttpPost]
         [AllowAnonymous]
@@ -114,5 +115,38 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             return View();
         }
 
-    }
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+		public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await _userManager.FindByEmailAsync(model.Email);
+				if (user == null)
+				{
+					return RedirectToAction("ResetPasswordConfirmation");
+				}
+
+				var PassResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                var callBackUrl = Url.Action("RessetPassword","Account",
+                    new 
+                    {useId = user.Id,
+                     Token = PassResetToken,
+                    }
+                    ,protocol: HttpContext.Request.Scheme);
+
+                await _emaiService.SendEmailAsync(model.Email, "Reset Password",
+                    "Please Reset your Password Follow the Link:<a href=\""+callBackUrl+"\">click Here</a> ");
+                
+                return RedirectToAction("ResetPasswordConfirmation");
+			}
+			return View();
+		}
+	}
 }
