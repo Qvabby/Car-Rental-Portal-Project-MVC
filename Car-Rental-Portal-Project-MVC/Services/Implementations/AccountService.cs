@@ -1,11 +1,16 @@
 ﻿using AutoMapper;
+using Azure;
 using Car_Rental_Portal_Project_MVC.Data;
 using Car_Rental_Portal_Project_MVC.Models;
 using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
 using Car_Rental_Portal_Project_MVC.Services.Interfaces;
+using Google.Apis.Gmail.v1;
 using identityStep.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 
@@ -18,14 +23,19 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
         public readonly ApplicationDbContext _db;
         private readonly UrlEncoder _urlEncoder;
         private readonly IMapper _mapper;
-        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signinManager, ApplicationDbContext db, UrlEncoder urlEncoder, IMapper mapper)
+        private readonly IEmailService _emailService;
+        public AccountService(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signinManager, ApplicationDbContext db, UrlEncoder urlEncoder, IMapper mapper, IEmailService emailService)
         {
             _userManager = userManager;
             _signinManager = signinManager;
             _db = db;
             _urlEncoder = urlEncoder;
             _mapper = mapper;
+            _emailService = emailService;
         }
+
+
+
         /// <summary>
         /// This is Account Login Method, Used to Log In user using parameter "LoginViewModel" model.
         /// </summary>
@@ -145,6 +155,96 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
                 return response;
             }
         }
+        /// <summary>
+        /// Password Reseting POST Method, which is used to reset users' password.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<ServiceResponse<ForgotPasswordViewModel>> ForgetPassword(ForgotPasswordViewModel model, IUrlHelper Url, HttpContext HttpContext)
+        {
+            var response = new ServiceResponse<ForgotPasswordViewModel>();
+            try
+            {
+                //getting logged in user.
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                //checking user.
+                if (user == null)
+                {
+                    //if its null then redirect
+                    response.success = false;
+                    response.Message = "User is Null";
+                    response.Description = "We couldn't Locate the user.";
+                    return response;
+                }
 
+                //generating token.
+                var Token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                //getting CallBackUrl
+                var callBackUrl = Url.Action("ResetPassword", "Account",
+                    new
+                    {
+                        UserId = user.Id,
+                        Code = Token,
+                    }
+                    , protocol: HttpContext.Request.Scheme);
+                //Sending To Mail.
+                await _emailService.SendEmailAsync(model.Email, "Reset Password",
+                    "Please Reset your Password Follow the Link:<a href=\"" + callBackUrl + "\">click Here</a> ");
+
+                response.success = true;
+                response.Message = "Message Has Been Sent.";
+                response.Description = $"We have Sent Email Confirmation To {user.Email}";
+                return response;
+
+            }
+            catch (Exception e)
+            {
+                response.success = false;
+                response.Message = e.Message;
+                response.Description = e.InnerException.Message;
+                return response;
+            }
+        }
+
+        public async Task<ServiceResponse<ResetPasswordViewModel>> ResetPassword(ResetPasswordViewModel model)
+        {
+            //creating response
+            var response = new ServiceResponse<ResetPasswordViewModel>();
+            try
+            {
+                //getting user.
+                var user = await _userManager.FindByIdAsync(model.UserId.ToString());
+                if (user == null)
+                {
+                    //if its null then redirect
+                    response.success = false;
+                    response.Message = "User is Null";
+                    response.Description = "We couldn't Locate the user.";
+                    return response;
+                }
+                //getting and checking result.
+                var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+                if (result.Succeeded)
+                {
+                    response.success = true;
+                    response.Message = "Result is successful.";
+                    response.Description = $"We have Reseted Password of the {user.Email}";
+                    return response;
+                }
+                //else
+                response.success = false;
+                response.Message = "error";
+                return response;
+            }
+            catch (Exception e)
+            {
+                response.success = false;
+                response.Message = e.Message;
+                response.Description = e.InnerException.Message;
+                return response;
+            }
+            
+        }
     }
 }

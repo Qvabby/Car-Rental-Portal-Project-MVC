@@ -1,11 +1,13 @@
 ﻿using Car_Rental_Portal_Project_MVC.Data;
 using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
+using Car_Rental_Portal_Project_MVC.Services;
 using Car_Rental_Portal_Project_MVC.Services.Implementations;
 using Car_Rental_Portal_Project_MVC.Services.Interfaces;
 using identityStep.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 
@@ -18,16 +20,16 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         public readonly UserManager<IdentityUser> _userManager;
         public readonly SignInManager<IdentityUser> _signinManager;
         public readonly ApplicationDbContext _db;
-        public readonly IEmaiService _emaiService;
+        public readonly IEmailService _emailService;
 
 
-		public AccountController(UserManager<IdentityUser> usermanager, SignInManager<IdentityUser> signinmanager, ApplicationDbContext db, IAccountService accountService, IEmaiService emaiService)
+		public AccountController(UserManager<IdentityUser> usermanager, SignInManager<IdentityUser> signinmanager, ApplicationDbContext db, IAccountService accountService, IEmailService emaiService)
 		{
 			_userManager = usermanager;
 			_signinManager = signinmanager;
 			_db = db;
 			_accountService = accountService;
-			_emaiService = emaiService;
+            _emailService = emaiService;
 		}
 		[HttpGet]
         [AllowAnonymous]
@@ -110,43 +112,73 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
         [HttpGet]
-        public async Task<IActionResult> Profile()
+        public IActionResult Profile()
         {
             return View();
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult ForgotPassword()
         {
             return View();
         }
 
         [HttpPost]
+		[AllowAnonymous]
 		public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
 		{
+            //Checking model state validation.
 			if (ModelState.IsValid)
 			{
-				var user = await _userManager.FindByEmailAsync(model.Email);
-				if (user == null)
+                //getting logged in user.
+                var response = await _accountService.ForgetPassword(model, Url, HttpContext);
+				if (response.success)
 				{
-					return RedirectToAction("ResetPasswordConfirmation");
+                    return RedirectToAction("ForgotPasswordConfirmation");
+                    
 				}
+                return RedirectToAction("ForgotPassword");
 
-				var PassResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-                var callBackUrl = Url.Action("RessetPassword","Account",
-                    new 
-                    {useId = user.Id,
-                     Token = PassResetToken,
-                    }
-                    ,protocol: HttpContext.Request.Scheme);
-
-                await _emaiService.SendEmailAsync(model.Email, "Reset Password",
-                    "Please Reset your Password Follow the Link:<a href=\""+callBackUrl+"\">click Here</a> ");
-                
-                return RedirectToAction("ResetPasswordConfirmation");
-			}
+            }
 			return View();
 		}
-	}
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string Code = null, string UserId = null)
+        {
+            return Code == null ? RedirectToAction("Error", "Home") : View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            //checking modelstate
+            if (ModelState.IsValid)
+            {
+                var response = await _accountService.ResetPassword(model);
+                if (response.success)
+                {
+                    return RedirectToAction("ResetPasswordConfirmation");
+                }
+
+               return RedirectToAction("ForgotPasswordConfirmation");
+
+
+            }
+            return RedirectToAction("Error", "Home");
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+    }
 }

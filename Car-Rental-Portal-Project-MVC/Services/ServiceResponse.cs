@@ -10,7 +10,7 @@
         public string Description { get; set; } = string.Empty;
         //here you can check if response was successful or not.
         public bool success { get; set; } = true;
-        //lockout
+        //Account Lockout Response.
         public bool IsLockedOut { get; set; } = false;
 
     }
