@@ -1,4 +1,5 @@
-﻿using Car_Rental_Portal_Project_MVC.Data;
+﻿using AutoMapper;
+using Car_Rental_Portal_Project_MVC.Data;
 using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
 using Car_Rental_Portal_Project_MVC.Services;
 using Car_Rental_Portal_Project_MVC.Services.Implementations;
@@ -21,17 +22,18 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         public readonly SignInManager<IdentityUser> _signinManager;
         public readonly ApplicationDbContext _db;
         public readonly IEmailService _emailService;
+        public readonly IMapper _mapper;
 
-
-		public AccountController(UserManager<IdentityUser> usermanager, SignInManager<IdentityUser> signinmanager, ApplicationDbContext db, IAccountService accountService, IEmailService emaiService)
-		{
-			_userManager = usermanager;
-			_signinManager = signinmanager;
-			_db = db;
-			_accountService = accountService;
+        public AccountController(UserManager<IdentityUser> usermanager, SignInManager<IdentityUser> signinmanager, ApplicationDbContext db, IAccountService accountService, IEmailService emaiService, IMapper mapper)
+        {
+            _userManager = usermanager;
+            _signinManager = signinmanager;
+            _db = db;
+            _accountService = accountService;
             _emailService = emaiService;
-		}
-		[HttpGet]
+            _mapper = mapper;
+        }
+        [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Register(string? returnUrl = null)
         {
@@ -94,10 +96,11 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
                     //If response was successful.
                     return LocalRedirect(ReturnUrl);
                 }
-                else if (response.IsLockedOut)
+                else if (response.Message == "LockOut")
                 {
                     //if we have lockout.
-                    return View(model);
+                    ModelState.AddModelError(string.Empty,response.Description);
+                    return View(response.Data);
                 }
             }
             //else.
@@ -112,9 +115,11 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
         [HttpGet]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            var UserModel = _mapper.Map<ProfileViewModel>(user);
+            return View(UserModel);
         }
 
         [HttpGet]
@@ -131,6 +136,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             //Checking model state validation.
 			if (ModelState.IsValid)
 			{
+
                 //getting logged in user.
                 var response = await _accountService.ForgetPassword(model, Url, HttpContext);
 				if (response.success)

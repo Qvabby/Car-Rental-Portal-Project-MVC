@@ -35,7 +35,7 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
         }
 
 
-
+        
         /// <summary>
         /// This is Account Login Method, Used to Log In user using parameter "LoginViewModel" model.
         /// </summary>
@@ -48,7 +48,8 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
             //Trying To Log in the user.
             var result = await _signinManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
             //Getting User From Database.
-            var user = _db.AplicationUsers.FirstOrDefault(x => x.UserName.ToLower() == model.Username.ToLower());
+            var user = _db.AplicationUsers
+                .FirstOrDefault(x => x.UserName.ToLower() == model.Username.ToLower());
             try
             {
                 if (result.Succeeded)
@@ -64,18 +65,18 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
                     var time = user.LockoutEnd - DateTime.UtcNow;
                     var Seconds = time.Value.Seconds;
                     var Minutes = time.Value.Minutes;
-                    string ErrorMessage = $"Hello {user.Email}. Your Account is Locked for {Minutes} Minutes {Seconds} seconds";
+                    string ErrorMessage = $"Hello {user.UserName}. Your Account is Locked for {Minutes} Minutes {Seconds} seconds";
 
                     response.success = false;
-                    response.IsLockedOut = true;
                     response.Data = model;
-                    response.Message = ErrorMessage;
+                    response.Message = "LockOut";
+                    response.Description = ErrorMessage;
                     return response;
                 }
             }
             catch (Exception e)
             {
-                //if Exception happened.
+                //if Exception happens.
                 response.success = false;
                 response.Message = e.Message;
                 response.Description = e.Source;
@@ -156,7 +157,7 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
             }
         }
         /// <summary>
-        /// Password Reseting POST Method, which is used to reset users' password.
+        /// Password Forget POST Method, which is used to Generate Token for reseting password.
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -206,7 +207,11 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
                 return response;
             }
         }
-
+        /// <summary>
+        /// Password Reseting POST Method, Used for reseting password.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<ServiceResponse<ResetPasswordViewModel>> ResetPassword(ResetPasswordViewModel model)
         {
             //creating response

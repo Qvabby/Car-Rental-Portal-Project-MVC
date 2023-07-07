@@ -44,7 +44,7 @@ namespace Car_Rental_Portal_Project_MVC
             {
                 opt.Password.RequiredLength = 6;
                 opt.Password.RequireLowercase = true;
-                opt.Lockout.DefaultLockoutTimeSpan = new TimeSpan(0, 0, 5);
+                opt.Lockout.DefaultLockoutTimeSpan = new TimeSpan(0, 1, 5);
                 opt.Lockout.MaxFailedAccessAttempts = 2;
             });
             //Configuring Cookies To Application.

@@ -1,7 +1,5 @@
-﻿@using Car_Rental_Portal_Project_MVC.Data;
-@using Microsoft.AspNetCore.Identity
-@inject UserManager<IdentityUser> UserManager
-@inject ApplicationDbContext _db;
+﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
+@model ProfileViewModel
 
 <div class="row">
     <div class="col-12">
@@ -14,25 +12,19 @@
         <div class="card">
             <div class="card-header bg-dark text-white">
                 <h5 class="text-center text-black">
-                    @UserManager.GetUserName(User)
+                    @Model.Username
                 </h5>
             </div>
-            @{
-                var Id = UserManager.GetUserId(User);
-                var DBuser = _db.AplicationUsers.FirstOrDefault(x => x.Id == Id);
-                <div class="card-body">
-                    <h6>Information:</h6>
-                    <p>Username: @DBuser.UserName</p>
-                    <p>Full Name: @DBuser.Name @DBuser.LastName </p>
-                    <p>Email: @DBuser.Email</p>
-                    <p>Phone: @DBuser.PhoneNumber</p>
-
-                    
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-warning">Edit Profile</a>
-                </div>
-            }
+            <div class="card-body">
+                <h6>Information:</h6>
+                <p>Username: @Model.Username</p>
+                <p>Full Name: @Model.Name @Model.LastName </p>
+                <p>Email: @Model.Email</p>
+                <p>Phone: @Model.PhoneNumber</p>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-warning">Edit Profile</a>
+            </div>
         </div>
     </div>
     <div class="col-8">

@@ -10,6 +10,7 @@ namespace Car_Rental_Portal_Project_MVC
         {
             //Syntax - CreateMap< , >().ReverseMap();
             CreateMap<RegisterViewModel, ApplicationUser>().ReverseMap();
+            CreateMap<ProfileViewModel, ApplicationUser>().ReverseMap();
         }
     }
 }
