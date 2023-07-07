@@ -121,14 +121,12 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             var UserModel = _mapper.Map<ProfileViewModel>(user);
             return View(UserModel);
         }
-
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ForgotPassword()
         {
             return View();
         }
-
         [HttpPost]
 		[AllowAnonymous]
 		public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)

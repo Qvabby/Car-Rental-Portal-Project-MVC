@@ -89,7 +89,6 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
             return response;
             
         }
-
         /// <summary>
         /// Register GET method, used to draw Registers' View.
         /// </summary>
@@ -116,7 +115,6 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
                 return response;
             }
         }
-
         /// <summary>
         /// Register POST method, Which is used to register User, using RegisterViewModel Parameter.
         /// </summary>
