@@ -33,9 +33,6 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
             _mapper = mapper;
             _emailService = emailService;
         }
-
-
-        
         /// <summary>
         /// This is Account Login Method, Used to Log In user using parameter "LoginViewModel" model.
         /// </summary>
