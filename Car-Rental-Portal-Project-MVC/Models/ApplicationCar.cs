@@ -5,8 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Car_Rental_Portal_Project_MVC.Models
 {
     public class ApplicationCar
-    {
-        
+    {  
         public int Id { get; set; }
         [Required]
         [StringLength(20)]
