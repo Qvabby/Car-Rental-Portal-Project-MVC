@@ -30,8 +30,8 @@ namespace Car_Rental_Portal_Project_MVC
 
             builder.Services.AddAuthentication().AddGoogle(options =>
             {
-                options.ClientId = "193979039961-k4pkpocougkrrb5llu9sovd3fdh612c2.apps.googleusercontent.com";
-                options.ClientSecret = "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";
+                options.ClientId = "266771232428-njtbgruudcfoarv6molq72tk6rc154ou.apps.googleusercontent.com";
+                options.ClientSecret = "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";
             }
                );
 

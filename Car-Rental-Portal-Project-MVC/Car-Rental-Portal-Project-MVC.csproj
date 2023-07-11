@@ -19,6 +19,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Owin.Security.Google" Version="4.2.2" />
+    <PackageReference Include="Owin" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

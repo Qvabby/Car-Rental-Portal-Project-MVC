@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -100,7 +101,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
                 else if (response.Message == "LockOut")
                 {
                     //if we have lockout.
-                    ModelState.AddModelError(string.Empty,response.Description);
+                    ModelState.AddModelError(string.Empty, response.Description);
                     return View(response.Data);
                 }
             }
@@ -134,25 +135,25 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             return View();
         }
         [HttpPost]
-		[AllowAnonymous]
-		public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
-		{
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
             //Checking model state validation.
-			if (ModelState.IsValid)
-			{
+            if (ModelState.IsValid)
+            {
 
                 //getting logged in user.
                 var response = await _accountService.ForgetPassword(model, Url, HttpContext);
-				if (response.success)
-				{
+                if (response.success)
+                {
                     return RedirectToAction("ForgotPasswordConfirmation");
-                    
-				}
+
+                }
                 return RedirectToAction("ForgotPassword");
 
             }
-			return View();
-		}
+            return View();
+        }
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ForgotPasswordConfirmation()
@@ -178,7 +179,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
                     return RedirectToAction("ResetPasswordConfirmation");
                 }
 
-               return RedirectToAction("ForgotPasswordConfirmation");
+                return RedirectToAction("ForgotPasswordConfirmation");
 
 
             }
@@ -190,5 +191,54 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         {
             return View();
         }
+
+        // ...
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLogin(string provider, string returnUrl = null)
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+            var properties = _signinManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string? returnUrl, string? remoteError)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+            if (remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider : {remoteError}");
+                return View(nameof(Login));
+            }
+            var info = await _signinManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+            var result = await _signinManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false); //logofffromsystem
+            if (result.Succeeded)
+            {
+                //uf the user havean acc
+                await _signinManager.UpdateExternalAuthenticationTokensAsync(info);
+                return LocalRedirect(returnUrl);
+            }
+            else if (result.RequiresTwoFactor)
+            {
+                return RedirectToAction("VerifyAuthCode", new { ReturnUrl = returnUrl });
+            }
+            else
+            {
+                //if user doesnt have acc
+                ViewData["ReturnUrl"] = returnUrl;
+                ViewData["ProviderDisplayName"] = info.ProviderDisplayName;
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                var name = info.Principal.FindFirstValue(ClaimTypes.Name);
+                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email, Name = name });
+
+            }
+            return View(nameof(Login));
+        }
     }
 }
+
