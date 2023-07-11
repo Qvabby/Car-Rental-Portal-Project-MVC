@@ -1,0 +1,19 @@
+﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
+@model GetCarViewModel
+<div class="row">
+    <div class="col-md-8">
+        <h2>
+            @Model.Manufacturer | @Model.Model | @Model.Year
+        </h2>
+    </div>
+    <div class="col-md-4">
+        <h2>
+            Stuff
+        </h2>
+        <form method="post" asp-controller="Car" asp-action="HireCar">
+            <button class="btn btn-warning" type="submit">
+                RENT!
+            </button>
+        </form>
+    </div>
+</div>

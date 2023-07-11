@@ -9,204 +9,203 @@ using AutoMapper;
 
 public class CarService : ICarService
 {
-	private readonly ApplicationDbContext _dbContext;
-	private readonly IMapper _mapper;
-	public CarService(ApplicationDbContext dbContext, IMapper mapper)
-	{
-		_dbContext = dbContext;
-		_mapper = mapper;
-	}
-	public async Task<ServiceResponse<CarViewModel>> AddCar(CarViewModel car)
-	{
+    private readonly ApplicationDbContext _dbContext;
+    private readonly IMapper _mapper;
+    public CarService(ApplicationDbContext dbContext, IMapper mapper)
+    {
+        _dbContext = dbContext;
+        _mapper = mapper;
+    }
+    public async Task<ServiceResponse<GetCarViewModel>> AddCar(AddCarViewModel car)
+    {
+        var response = new ServiceResponse<GetCarViewModel>();
+        try
+        {
+            // checks on the car data
+            if (car == null)
+            {
+                response.success = false;
+                response.Message = "Invalid car model.";
+                return response;
+            }
 
-		var response = new ServiceResponse<CarViewModel>();
+            // Map the car view model to the application car entity
+            var newCar = _mapper.Map<ApplicationCar>(car);
 
-		try
-		{
-			// checks on the car data
-			if (car == null)
-			{
-				response.success = false;
-				response.Message = "Invalid car data.";
-				return response;
-			}
+            // Save the new car to the database using the injected ApplicationDbContext
+            _dbContext.ApplicationCars.Add(newCar);
+            await _dbContext.SaveChangesAsync();
 
-			// Map the car view model to the application car entity
-			var newCar = _mapper.Map<ApplicationCar>(car);
+            // Map the added car back to the view model
+            var addedCarViewModel = _mapper.Map<GetCarViewModel>(newCar);
 
-			// Save the new car to the database using the injected ApplicationDbContext
-			_dbContext.ApplicationCars.Add(newCar);
-			await _dbContext.SaveChangesAsync();
+            response.Data = addedCarViewModel;
+            response.Message = "Car added successfully.";
+            return response;
+        }
+        catch (Exception ex)
+        {
+            response.success = false;
+            response.Message = "An error occurred while adding the car: " + ex.Message;
+            return response;
+        }
+    }
 
-			// Map the added car back to the view model
-			var addedCarViewModel = _mapper.Map<CarViewModel>(newCar);
+    public async Task<ServiceResponse<GetCarViewModel>> DeleteCar(int id)
+    {
+        var response = new ServiceResponse<GetCarViewModel>();
 
-			response.Data = addedCarViewModel;
-			response.Message = "Car added successfully.";
-		}
-		catch (Exception ex)
-		{
-			response.success = false;
-			response.Message = "An error occurred while adding the car: " + ex.Message;
-		}
+        try
+        {
+            //Search Car by id
+            var car = await _dbContext.ApplicationCars.FindAsync(id);
 
-		return response;
-	}
+            // Check if the car exists
+            if (car == null)
+            {
+                response.success = false;
+                response.Message = "Car not found.";
+                return response;
+            }
+            // Remove the car from the DataBase
+            _dbContext.ApplicationCars.Remove(car);
 
-	public async Task<ServiceResponse<CarViewModel>> DeleteCar(int id)
-	{
-		var response = new ServiceResponse<CarViewModel>();
+            // Save the changes to the database
+            await _dbContext.SaveChangesAsync();
 
-		try
-		{		
-			//Search Car by id
-			var car = await _dbContext.ApplicationCars.FindAsync(id);
-			
-			// Check if the car exists
-			if (car == null)
-			{
-				response.success = false;
-				response.Message = "Car not found.";
-				return response;
-			}
-			// Remove the car from the DataBase
-			_dbContext.ApplicationCars.Remove(car);
+            response.Message = "Car deleted successfully.";
+            return response;
+        }
+        catch (Exception ex)
+        {
+            response.success = false;
+            response.Message = "An error occurred while deleting the car: " + ex.Message;
+            return response;
+        }
 
-			// Save the changes to the database
-			await _dbContext.SaveChangesAsync();
+    }
 
-			response.Message = "Car deleted successfully.";
-		}
-		catch (Exception ex)
-		{
-			response.success = false;
-			response.Message = "An error occurred while deleting the car: " + ex.Message;
-			
-		}
+    public async Task<ServiceResponse<List<GetCarViewModel>>> GetAllCars()
+    {
+        var response = new ServiceResponse<List<GetCarViewModel>>();
 
-		return response;
-	}
+        try
+        {
+            // Retrieve all cars from the database
+            var cars = await _dbContext.ApplicationCars.ToListAsync();
 
-	public async Task<ServiceResponse<List<CarViewModel>>> GetAllCars()
-	{
-		var response = new ServiceResponse<List<CarViewModel>>();
+            // Check if any cars were found
+            if (cars == null || cars.Count == 0)
+            {
+                response.success = false;
+                response.Message = "No cars found.";
+                return response;
+            }
 
-		try
-		{
-			// Retrieve all cars from the database
-			var cars = await _dbContext.ApplicationCars.ToListAsync();
+            // Map the list of cars to a Data
+            response.Data = await _dbContext.ApplicationCars
+            .Select(x => _mapper.Map<GetCarViewModel>(x))
+            .ToListAsync();
 
-			// Check if any cars were found
-			if (cars == null || cars.Count == 0)
-			{
-				response.success = false;
-				response.Message = "No cars found.";
-				return response;
-			}
+            response.Message = "Cars retrieved successfully.";
+            return response;
+        }
+        catch (Exception ex)
+        {
+            response.success = false;
+            response.Message = "An error occurred while retrieving cars: " + ex.Message;
+            return response;
+        }
+    }
 
-			// Map the list of cars to a list of CarViewModel
-			var carViewModels = _mapper.Map<List<CarViewModel>>(cars);
+    public async Task<ServiceResponse<GetCarViewModel>> GetCarById(int id)
+    {
+        var response = new ServiceResponse<GetCarViewModel>();
 
-			response.Data = carViewModels;
-			response.Message = "Cars retrieved successfully.";
-		}
-		catch (Exception ex)
-		{
-			response.success = false;
-			response.Message = "An error occurred while retrieving cars: " + ex.Message;
-		}
+        try
+        {
+            // Find By Id
+            var car = await _dbContext.ApplicationCars.FindAsync(id);
 
-		return response;
-	}
+            if (car != null)
+            {
+                // Map the car entity to CarViewModel
+                var carViewModel = _mapper.Map<GetCarViewModel>(car);
+                response.Data = carViewModel;
+                response.Message = "Car retrieved successfully.";
+            }
+            else
+            {
+                response.success = false;
+                response.Message = "Car not found.";
+            }
+        }
+        catch (Exception ex)
+        {
+            response.success = false;
+            response.Message = $"An error occurred while retrieving the car: {ex.Message}";
+        }
 
+        return response;
+    }
 
-	public async Task<ServiceResponse<CarViewModel>> GetCarById(int id)
-	{
-		var response = new ServiceResponse<CarViewModel>();
+    public async Task<ServiceResponse<GetCarViewModel>> UpdateCar(UpdateCarViewModel car)
+    {
+        var response = new ServiceResponse<GetCarViewModel>();
 
-		try
-		{
-			// Find By Id
-			var car = await _dbContext.ApplicationCars.FindAsync(id);
+        try
+        {
+            //check on the car 
+            if (car == null)
+            {
+                response.success = false;
+                response.Message = "Invalid car data.";
+                return response;
+            }
 
-			if (car != null)
-			{
-				// Map the car entity to CarViewModel
-				var carViewModel = _mapper.Map<CarViewModel>(car);
-				response.Data = carViewModel;
-				response.Message = "Car retrieved successfully.";
-			}
-			else
-			{
-				response.success = false;
-				response.Message = "Car not found.";
-			}
-		}
-		catch (Exception ex)
-		{
-			response.success = false;
-			response.Message = $"An error occurred while retrieving the car: {ex.Message}";
-		}
+            // Retrieve the existing car from the database
+            var existingCar = await _dbContext.ApplicationCars.FindAsync(car.Id);
 
-		return response;
-	}
+            if (existingCar == null)
+            {
+                response.success = false;
+                response.Message = "Car not found.";
+                return response;
+            }
 
+            // Update the properties of the existing car entity with the new values from the view model
+            _mapper.Map(car, existingCar);
+            #region NoMapUpdate
+            //existingCar.Manufacturer = car.Manufacturer;
+            //existingCar.Model = car.Model;
+            //existingCar.Year = car.Year;
+            //existingCar.Price = car.Price;
+            //existingCar.Engine = car.Engine;
+            //existingCar.Transmission = car.Transmission;
+            //existingCar.FuelType = car.FuelType;
+            //existingCar.FuelTank = car.FuelTank;
+            //existingCar.WheelType = car.WheelType;
+            //existingCar.Location = car.Location;
+            //existingCar.PeopleAmount = car.PeopleAmount;
+            //existingCar.Rented = car.Rented;
+            //existingCar.RentedByUserId = car.RentedByUserId;
+            #endregion
+            // Save the changes to the database
+            await _dbContext.SaveChangesAsync();
 
-	public async Task<ServiceResponse<CarViewModel>> UpdateCar(CarViewModel car)
-	{
-		var response = new ServiceResponse<CarViewModel>();
+            // Map the updated car entity back to the view model
+            var updatedCarViewModel = _mapper.Map<GetCarViewModel>(existingCar);
 
-		try
-		{
-			//check on the car 
-			if (car == null)
-			{
-				response.success = false;
-				response.Message = "Invalid car data.";
-				return response;
-			}
+            response.Data = updatedCarViewModel;
+            response.Message = "Car updated successfully.";
+        }
+        catch (Exception ex)
+        {
+            response.success = false;
+            response.Message = $"An error occurred while updating the car: {ex.Message}";
+        }
 
-			// Retrieve the existing car from the database
-			var existingCar = await _dbContext.ApplicationCars.FindAsync(car.Id);
-
-			if (existingCar == null)
-			{
-				response.success = false;
-				response.Message = "Car not found.";
-				return response;
-			}
-
-			// Update the properties of the existing car entity with the new values from the view model
-			existingCar.Manufacturer = car.Manufacturer;
-			existingCar.Model = car.Model;
-			existingCar.Year = car.Year;
-			existingCar.Price = car.Price;
-			existingCar.Engine = car.Engine;
-			existingCar.Transmission = car.Transmission;
-			existingCar.FuelType = car.FuelType;
-			existingCar.FuelTank = car.FuelTank;
-			existingCar.WheelType = car.WheelType;
-			existingCar.Location = car.Location;
-			existingCar.PeopleAmount = car.PeopleAmount;
-			existingCar.Rented = car.Rented;
-			existingCar.RentedByUserId = car.RentedByUserId;
-
-			// Save the changes to the database
-			await _dbContext.SaveChangesAsync();
-
-			// Map the updated car entity back to the view model
-			var updatedCarViewModel = _mapper.Map<CarViewModel>(existingCar);
-
-			response.Data = updatedCarViewModel;
-			response.Message = "Car updated successfully.";
-		}
-		catch (Exception ex)
-		{
-			response.success = false;
-			response.Message = $"An error occurred while updating the car: {ex.Message}";
-		}
-
-		return response;
-	}
+        return response;
+    }
 
 }

@@ -5,11 +5,11 @@ namespace Car_Rental_Portal_Project_MVC.Services.Interfaces
 {
 	public interface ICarService
 	{
-		Task<ServiceResponse<List<CarViewModel>>> GetAllCars();
-		Task<ServiceResponse<CarViewModel>> GetCarById(int id);
-		Task<ServiceResponse<CarViewModel>> AddCar(CarViewModel car);
-		Task<ServiceResponse<CarViewModel>> UpdateCar(CarViewModel car);
-		Task<ServiceResponse<CarViewModel>> DeleteCar(int id);
+		Task<ServiceResponse<List<GetCarViewModel>>> GetAllCars();
+		Task<ServiceResponse<GetCarViewModel>> GetCarById(int id);
+		Task<ServiceResponse<GetCarViewModel>> AddCar(AddCarViewModel car);
+		Task<ServiceResponse<GetCarViewModel>> UpdateCar(UpdateCarViewModel car);
+		Task<ServiceResponse<GetCarViewModel>> DeleteCar(int id);
 	}
 
 }

@@ -3,6 +3,7 @@ using Azure;
 using Car_Rental_Portal_Project_MVC.Data;
 using Car_Rental_Portal_Project_MVC.Models;
 using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
+using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
 using Car_Rental_Portal_Project_MVC.Services.Interfaces;
 using Google.Apis.Gmail.v1;
 using identityStep.Models;
@@ -245,6 +246,16 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
                 return response;
             }
             
+        }
+
+        public Task<ServiceResponse<GetCarViewModel>> RentCar(GetCarViewModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ServiceResponse<GetCarViewModel>> HireCar(GetCarViewModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

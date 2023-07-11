@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
+using Microsoft.EntityFrameworkCore;
 using System.Numerics;
 
 namespace Car_Rental_Portal_Project_MVC.Models.ViewModels.Account
@@ -14,6 +15,7 @@ namespace Car_Rental_Portal_Project_MVC.Models.ViewModels.Account
         public string LastName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public List<GetCarViewModel> OwnCars { get; set; }
 
     }
 }

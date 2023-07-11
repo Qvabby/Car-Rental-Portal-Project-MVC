@@ -4,6 +4,7 @@ using Car_Rental_Portal_Project_MVC.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Car_Rental_Portal_Project_MVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230711184957_addedDescriptionPropInCar")]
+    partial class addedDescriptionPropInCar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,10 +46,6 @@ namespace Car_Rental_Portal_Project_MVC.Migrations
                     b.Property<int>("FuelType")
                         .HasColumnType("int");
 
-                    b.Property<string>("HiredByUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -69,6 +68,13 @@ namespace Car_Rental_Portal_Project_MVC.Migrations
                         .HasMaxLength(99999)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<bool>("Rented")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RentedByUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Transmission")
                         .HasColumnType("int");
 
@@ -80,6 +86,7 @@ namespace Car_Rental_Portal_Project_MVC.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Year")
+                        .HasMaxLength(2023)
                         .HasColumnType("int");
 
                     b.HasKey("Id");

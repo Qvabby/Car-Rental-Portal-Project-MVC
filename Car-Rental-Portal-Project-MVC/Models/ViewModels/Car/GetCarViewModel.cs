@@ -1,11 +1,10 @@
 ﻿using Car_Rental_Portal_Project_MVC.Models.Enums;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace Car_Rental_Portal_Project_MVC.Models
+namespace Car_Rental_Portal_Project_MVC.Models.ViewModels.Car
 {
-    public class ApplicationCar
-    {  
+    public class GetCarViewModel
+    {
         public int Id { get; set; }
         [Required]
         [StringLength(20)]
@@ -36,10 +35,6 @@ namespace Car_Rental_Portal_Project_MVC.Models
         [Required]
         public int PeopleAmount { get; set; }
         public string HiredByUserId { get; set; }
-        //for view
         public string Description { get; set; }
-        //relations
-        public string UserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; } = null!;
     }
 }

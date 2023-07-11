@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 
@@ -117,7 +118,12 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var userid = await _userManager.GetUserIdAsync(await _userManager.GetUserAsync(User));
+
+            var user = await _db.AplicationUsers
+                .Include(u => u.OwnCars)
+                .FirstOrDefaultAsync(x => x.Id == userid);
+
             var UserModel = _mapper.Map<ProfileViewModel>(user);
             return View(UserModel);
         }
