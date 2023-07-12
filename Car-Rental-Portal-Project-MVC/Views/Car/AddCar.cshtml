@@ -1,83 +1,108 @@
 ﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
 @model AddCarViewModel
-<div class="row justify-content-center">
-    <div class="col-md-12">
-        <h2>Add Your Car.</h2>
-        <div class="form">
-            <form asp-controller="Car" asp-action="AddCar" class="form-control" method="post" role="form" class="form">
-                <div asp-validation-summary="All" class="text-danger"></div>
 
-                <div class="form-group">
-                    <label asp-for="Manufacturer">Manufacturer</label>
-                    <input asp-for="Manufacturer" class="form-control" />
-                    <span asp-validation-for="Manufacturer" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Model">Model</label>
-                    <input asp-for="Model" class="form-control" />
-                    <span asp-validation-for="Model" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Year">Year</label>
-                    <input asp-for="Year" class="form-control" />
-                    <span asp-validation-for="Year" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Price">Price</label>
-                    <input asp-for="Price" class="form-control" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Engine">Engine</label>
-                    <input asp-for="Engine" class="form-control" />
-                    <span asp-validation-for="Engine" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-@*
-                    @Html.DropDownList("EnumDropDown",ViewBag.EnumList as SelectList)*@
+<h2>Add Your Car.</h2>
 
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>--Transmission--</option>
-                        @foreach (var x in ViewBag.EnumList)
-                        {
-                            <option value="@x.ToString()">@x.ToString()</option>
-                        }
-                    </select>
+<div class="form">
+    <form asp-controller="Car" asp-action="AddCar" class="form-control" method="post" class="form">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group row">
+            <input asp-for="UserId" hidden />
+            <input asp-for="ApplicationUser" hidden />
+            <div class="form-group">
+                <label asp-for="Manufacturer">Manufacturer</label>
+                <input asp-for="Manufacturer" class="form-control" />
+                <span asp-validation-for="Manufacturer" class="text-danger"></span>
+            </div>
 
+            <div class="form-group">
+                <label asp-for="Model">Model</label>
+                <input asp-for="Model" class="form-control" />
+                <span asp-validation-for="Model" class="text-danger"></span>
+            </div>
 
-                    <label asp-for="Transmission"></label>
-                    <input asp-for="Transmission" type="text" class="form-control" />
-                    <span asp-validation-for="Transmission" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="Year">Year</label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price">Price</label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Engine">Engine</label>
+                <input asp-for="Engine" class="form-control" />
+                <span asp-validation-for="Engine" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Transmission">Transmission</label>
+                <select asp-for="Transmission" asp-items="@Model.TransmissionList" class="form-control">
+                    <option disabled selected> -- select role --</option>
+                </select>
 
 
-                </div>
-                <div class="form-group">
-                    <label asp-for="FuelType">FuelType</label>
-                    <input asp-for="FuelType" class="form-control" />
-                    <span asp-validation-for="FuelType" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="FuelTank">FuelTank</label>
-                    <input asp-for="FuelTank" class="form-control" />
-                    <span asp-validation-for="FuelTank" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="WheelType">WheelType</label>
-                    <input asp-for="WheelType" class="form-control" />
-                    <span asp-validation-for="WheelType" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Location">Location</label>
-                    <input asp-for="Location" class="form-control" />
-                    <span asp-validation-for="Location" class="text-danger"></span>
-                </div>
-                <div class="form-group mt-3">
-                    <button type="submit" class="btn btn-success form-control">Add Car</button>
-                </div>
+                @*<label asp-for="Transmission"></label>
+                <input asp-for="Transmission" type="text" class="form-control" />
+                <span asp-validation-for="Transmission" class="text-danger"></span>*@
 
 
-            </form>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FuelType">Fuel Type</label>
+                <select asp-for="FuelType" asp-items="@Model.FuelTypeList" class="form-control">
+                    <option disabled selected> -- select role --</option>
+                </select>
+                @*<label asp-for="FuelType">FuelType</label>
+                <input asp-for="FuelType" class="form-control" />
+                <span asp-validation-for="FuelType" class="text-danger"></span>*@
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FuelTank">FuelTank</label>
+                <input asp-for="FuelTank" class="form-control" />
+                <span asp-validation-for="FuelTank" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="WheelType">Wheel Type</label>
+                <select asp-for="WheelType" asp-items="@Model.WheelTypeList" class="form-control">
+                    <option disabled selected> -- select role --</option>
+                </select>
+
+                @*<label asp-for="WheelType">WheelType</label>
+                <input asp-for="WheelType" class="form-control" />
+                <span asp-validation-for="WheelType" class="text-danger"></span>*@
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Location">Location</label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description">Description</label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-success form-control">Add Car</button>
+            </div>
+
         </div>
-    </div>
+    </form>
 </div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

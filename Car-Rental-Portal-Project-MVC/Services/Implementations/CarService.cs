@@ -6,15 +6,18 @@ using Car_Rental_Portal_Project_MVC.Models;
 using Microsoft.EntityFrameworkCore;
 using Car_Rental_Portal_Project_MVC.Data;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 public class CarService : ICarService
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
-    public CarService(ApplicationDbContext dbContext, IMapper mapper)
+    private readonly UserManager<IdentityUser> _userManager;
+    public CarService(ApplicationDbContext dbContext, IMapper mapper, UserManager<IdentityUser> userManager)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _userManager = userManager;
     }
     public async Task<ServiceResponse<GetCarViewModel>> AddCar(AddCarViewModel car)
     {
@@ -33,7 +36,7 @@ public class CarService : ICarService
             var newCar = _mapper.Map<ApplicationCar>(car);
 
             // Save the new car to the database using the injected ApplicationDbContext
-            _dbContext.ApplicationCars.Add(newCar);
+            await _dbContext.AddAsync(newCar);
             await _dbContext.SaveChangesAsync();
 
             // Map the added car back to the view model
@@ -47,6 +50,7 @@ public class CarService : ICarService
         {
             response.success = false;
             response.Message = "An error occurred while adding the car: " + ex.Message;
+            response.Description = ex.InnerException.ToString();
             return response;
         }
     }
