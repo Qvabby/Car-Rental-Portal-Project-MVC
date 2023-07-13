@@ -18,7 +18,7 @@ namespace Car_Rental_Portal_Project_MVC.Models.ViewModels.Car
         [Range(1900, 2023)]
         public int Year { get; set; }
         [Required]
-        [MaxLength(99999)]
+        [Range(0,99999)]
         public decimal Price { get; set; }
         [Required]
         public float Engine { get; set; }
@@ -42,5 +42,7 @@ namespace Car_Rental_Portal_Project_MVC.Models.ViewModels.Car
         public int PeopleAmount { get; set; }
         public string HiredByUserId { get; set; }
         public string Description { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 @model GetCarViewModel
 
 <form class="needs-validation" novalidate>
-    <div class="form-row">
+    <div class="form row">
         <div class="form-group col-md-3">
             <label for="validationTooltip01">Manufacturer</label>
             <input type="text" class="form-control form-control-sm" id="validationTooltip01" placeholder="Manufacturer" value="" required>
@@ -26,13 +26,13 @@
         </div>
         <div class="form-group col-md-3">
             <label for="validationTooltip04">Price</label>
-            <input type="number" class="form-control form-control-sm" id="validationTooltip04" placeholder="Price" value="" required>
+            <input type="number" class="form-control form-control-sm" id="validationTooltip04" placeholder="Price" value="" required min="0">
             <div class="invalid-tooltip">
                 Please provide a valid price.
             </div>
         </div>
     </div>
-    <div class="form-row">
+    <div class="form row">
         <div class="form-group col-md-3">
             <label for="validationTooltip05">Engine</label>
             <input type="number" class="form-control form-control-sm" id="validationTooltip05" placeholder="Engine" value="" required step="0.01">
@@ -71,7 +71,7 @@
             </div>
         </div>
     </div>
-    <div class="form-row">
+    <div class="form row">
         <div class="form-group col-md-3">
             <label for="validationTooltip09">Wheel Type</label>
             <select class="form-control form-control-sm" id="validationTooltip09" required>
@@ -98,16 +98,19 @@
                 Please provide a valid number of people.
             </div>
         </div>
-        <div class="form-group col-md-3">
-            <label for="validationTooltip12">Description</label>
-            <textarea class="form-control form-control-sm" id="validationTooltip12" placeholder="Description" required></textarea>
-            <div class="invalid-tooltip">
-                Please provide a description.
-            </div>
+        <div class="form-group col-md-3 mt-3">
+            <button class="btn btn-primary" type="submit">Submit</button>
         </div>
+
     </div>
-    <button class="btn btn-primary" type="submit">Submit</button>
+
 </form>
 
 
 
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

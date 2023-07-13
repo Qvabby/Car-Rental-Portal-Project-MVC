@@ -62,10 +62,17 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCar(AddCarViewModel viewModel)
         {
-            var UserId = await _userManager.GetUserIdAsync(await _userManager.GetUserAsync(User));
+            var gluser = await _userManager.GetUserAsync(User);
+            var UserId = await _userManager.GetUserIdAsync(gluser);
             var user = await _db.AplicationUsers.FirstOrDefaultAsync(x => x.Id == UserId);
+            if (user != null)
+            {
+                ModelState.Root.Children[12].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
+            }
             viewModel.UserId = UserId;
             viewModel.ApplicationUser = user;
+            
+            
             if (!ModelState.IsValid)
 			{
                 return View(viewModel);

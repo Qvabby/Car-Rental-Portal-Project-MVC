@@ -40,6 +40,6 @@ namespace Car_Rental_Portal_Project_MVC.Models
         public string? Description { get; set; }
         //relations
         public string UserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; } = null!;
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -22,5 +23,6 @@
             <div class="col-12">something here.</div>
             <img src="" alt="Image here." />
         </div>
+        <partial name="_CarFilterPartial" model="new GetCarViewModel()" />
     </div>
 </div>

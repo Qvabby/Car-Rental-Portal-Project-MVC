@@ -1,4 +1,5 @@
 ﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
+@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
 @model ProfileViewModel
 
 <div class="row">
@@ -39,6 +40,7 @@
             {
                 @foreach (var car in Model.OwnCars)
                 {
+                    <partial name="_CarFilterPartial" model="new GetCarViewModel()" />
                     <div class="col-4">
                         <img src="@car.Id" class="card-img-top" alt="Car Image">
                         <div class="card-body">
