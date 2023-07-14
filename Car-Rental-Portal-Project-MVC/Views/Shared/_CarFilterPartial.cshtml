@@ -1,31 +1,32 @@
 ﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
-@model GetCarViewModel
+@using Car_Rental_Portal_Project_MVC.Models.Enums;
+@model CarFilterViewModel
 
 <form class="needs-validation" novalidate>
     <div class="form row">
         <div class="form-group col-md-3">
-            <label for="validationTooltip01">Manufacturer</label>
+            <label asp-for="Manufacturer">Manufacturer</label>
             <input type="text" class="form-control form-control-sm" id="validationTooltip01" placeholder="Manufacturer" value="" required>
             <div class="valid-tooltip">
                 Looks good!
             </div>
         </div>
         <div class="form-group col-md-3">
-            <label for="validationTooltip02">Model</label>
+            <label asp-for="Model">Model</label>
             <input type="text" class="form-control form-control-sm" id="validationTooltip02" placeholder="Model" value="" required>
             <div class="valid-tooltip">
                 Looks good!
             </div>
         </div>
         <div class="form-group col-md-3">
-            <label for="validationTooltip03">Year</label>
+            <label asp-for="Year">Year</label>
             <input type="number" class="form-control form-control-sm" id="validationTooltip03" placeholder="Year" value="" required min="1900" max="2023">
             <div class="invalid-tooltip">
                 Please provide a valid year.
             </div>
         </div>
         <div class="form-group col-md-3">
-            <label for="validationTooltip04">Price</label>
+            <label asp-for="Price">Price</label>
             <input type="number" class="form-control form-control-sm" id="validationTooltip04" placeholder="Price" value="" required min="0">
             <div class="invalid-tooltip">
                 Please provide a valid price.
@@ -34,37 +35,45 @@
     </div>
     <div class="form row">
         <div class="form-group col-md-3">
-            <label for="validationTooltip05">Engine</label>
+            <label asp-for="Engine">Engine</label>
             <input type="number" class="form-control form-control-sm" id="validationTooltip05" placeholder="Engine" value="" required step="0.01">
             <div class="invalid-tooltip">
                 Please provide a valid engine value.
             </div>
         </div>
         <div class="form-group col-md-3">
-            <label for="validationTooltip06">Transmission</label>
-            <select class="form-control form-control-sm" id="validationTooltip06" required>
+            <label asp-for="Transmission">Transmission</label>
+            <select asp-for="Transmission" class="form-control form-control-sm" id="validationTooltip06" required>
                 <option value="" selected disabled>Select</option>
-                <option value="1">Auto</option>
-                <option value="2">Manual</option>
+                @foreach (var transmissionValue in Enum.GetValues(typeof(TransmissionEnum)))
+                {
+                    <option value="@transmissionValue">@transmissionValue.ToString()</option>
+                }
             </select>
             <div class="invalid-tooltip">
                 Please select a transmission type.
             </div>
         </div>
         <div class="form-group col-md-3">
-            <label for="validationTooltip07">Fuel Type</label>
-            <select class="form-control form-control-sm" id="validationTooltip07" required>
+            <label asp-for="FuelType">Fuel Type</label>
+            <select asp-for="FuelType" class="form-control form-control-sm" id="validationTooltip07" required>
                 <option value="" selected disabled>Select</option>
-                <option value="1">Petrol</option>
-                <option value="2">Diesel</option>
-                <option value="3">Electric</option>
+                @foreach (var fuelTypeValue in Enum.GetValues(typeof(FuelTypeEnum)))
+                {
+                    <option value="@fuelTypeValue">@fuelTypeValue.ToString()</option>
+                }
             </select>
             <div class="invalid-tooltip">
                 Please select a fuel type.
             </div>
         </div>
+
+            <div class="invalid-tooltip">
+                Please select a fuel type.
+            </div>
+        </div>
         <div class="form-group col-md-3">
-            <label for="validationTooltip08">Fuel Tank</label>
+            <label asp-for="FuelTank">Fuel Tank</label>
             <input type="number" class="form-control form-control-sm" id="validationTooltip08" placeholder="Tank" value="" required>
             <div class="invalid-tooltip">
                 Please provide a valid tank capacity.
@@ -73,7 +82,7 @@
     </div>
     <div class="form row">
         <div class="form-group col-md-3">
-            <label for="validationTooltip09">Wheel Type</label>
+            <label asp-for="WheelType">Wheel Type</label>
             <select class="form-control form-control-sm" id="validationTooltip09" required>
                 <option value="" selected disabled>Select</option>
                 <option value="1">Front</option>
@@ -85,14 +94,14 @@
             </div>
         </div>
         <div class="form-group col-md-3">
-            <label for="validationTooltip10">Location</label>
+            <label asp-for="Location">Location</label>
             <input type="text" class="form-control form-control-sm" id="validationTooltip10" placeholder="Location" value="" required>
             <div class="invalid-tooltip">
                 Please provide a valid location.
             </div>
         </div>
         <div class="form-group col-md-3">
-            <label for="validationTooltip11">People Amount</label>
+            <label asp-for="PeopleAmount">People Amount</label>
             <input type="number" class="form-control form-control-sm" id="validationTooltip11" placeholder="People" value="" required min="0">
             <div class="invalid-tooltip">
                 Please provide a valid number of people.
