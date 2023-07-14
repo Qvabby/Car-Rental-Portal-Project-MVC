@@ -6,40 +6,30 @@
     <div class="form row">
         <div class="form-group col-md-3">
             <label asp-for="Manufacturer">Manufacturer</label>
-            <input type="text" class="form-control form-control-sm" id="validationTooltip01" placeholder="Manufacturer" value="" required>
-            <div class="valid-tooltip">
-                Looks good!
-            </div>
+            <input asp-for="Manufacturer" class="form-control form-control-sm" placeholder="Manufacturer" value="" required>
+            <span asp-validation-for="Manufacturer" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="Model">Model</label>
-            <input type="text" class="form-control form-control-sm" id="validationTooltip02" placeholder="Model" value="" required>
-            <div class="valid-tooltip">
-                Looks good!
-            </div>
+            <input asp-for="Model" class="form-control form-control-sm"placeholder="Model" value="" required>
+            <span asp-validation-for="Model" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="Year">Year</label>
-            <input type="number" class="form-control form-control-sm" id="validationTooltip03" placeholder="Year" value="" required min="1900" max="2023">
-            <div class="invalid-tooltip">
-                Please provide a valid year.
-            </div>
+            <input asp-for="Year" class="form-control form-control-sm" placeholder="Year" value="" required min="1900" max="2023">
+            <span asp-validation-for="Year" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="Price">Price</label>
-            <input type="number" class="form-control form-control-sm" id="validationTooltip04" placeholder="Price" value="" required min="0">
-            <div class="invalid-tooltip">
-                Please provide a valid price.
-            </div>
+            <input asp-for="Price" class="form-control form-control-sm" placeholder="Price" value="" required min="0">
+            <span asp-validation-for="Price" class="text-danger"></span>
         </div>
     </div>
     <div class="form row">
         <div class="form-group col-md-3">
             <label asp-for="Engine">Engine</label>
-            <input type="number" class="form-control form-control-sm" id="validationTooltip05" placeholder="Engine" value="" required step="0.01">
-            <div class="invalid-tooltip">
-                Please provide a valid engine value.
-            </div>
+            <input asp-for="Engine" class="form-control form-control-sm" placeholder="Engine" value="" required step="0.1" min="1.0">
+            <span asp-validation-for="Engine" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="Transmission">Transmission</label>
@@ -50,9 +40,7 @@
                     <option value="@transmissionValue">@transmissionValue.ToString()</option>
                 }
             </select>
-            <div class="invalid-tooltip">
-                Please select a transmission type.
-            </div>
+            <span asp-validation-for="Transmission" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="FuelType">Fuel Type</label>
@@ -63,49 +51,34 @@
                     <option value="@fuelTypeValue">@fuelTypeValue.ToString()</option>
                 }
             </select>
-            <div class="invalid-tooltip">
-                Please select a fuel type.
-            </div>
-        </div>
-
-            <div class="invalid-tooltip">
-                Please select a fuel type.
-            </div>
+            <span asp-validation-for="FuelType" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="FuelTank">Fuel Tank</label>
-            <input type="number" class="form-control form-control-sm" id="validationTooltip08" placeholder="Tank" value="" required>
-            <div class="invalid-tooltip">
-                Please provide a valid tank capacity.
-            </div>
+            <input asp-for="FuelTank" class="form-control form-control-sm" placeholder="Tank" value="" required>
+            <span asp-validation-for="FuelTank" class="text-danger"></span>
         </div>
     </div>
+    
     <div class="form row">
         <div class="form-group col-md-3">
             <label asp-for="WheelType">Wheel Type</label>
-            <select class="form-control form-control-sm" id="validationTooltip09" required>
+            <select class="form-control form-control-sm" asp-for="WheelType" required>
                 <option value="" selected disabled>Select</option>
-                <option value="1">Front</option>
-                <option value="2">Rear</option>
-                <option value="3">All</option>
+                <option value="1">Left</option>
+                <option value="2">Right</option>
             </select>
-            <div class="invalid-tooltip">
-                Please select a wheel type.
-            </div>
+            <span asp-validation-for="WheelType" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="Location">Location</label>
-            <input type="text" class="form-control form-control-sm" id="validationTooltip10" placeholder="Location" value="" required>
-            <div class="invalid-tooltip">
-                Please provide a valid location.
-            </div>
+            <input asp-for="Location" class="form-control form-control-sm" placeholder="Location" value="" required>
+            <span asp-validation-for="Location" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="PeopleAmount">People Amount</label>
-            <input type="number" class="form-control form-control-sm" id="validationTooltip11" placeholder="People" value="" required min="0">
-            <div class="invalid-tooltip">
-                Please provide a valid number of people.
-            </div>
+            <input asp-for="PeopleAmount" class="form-control form-control-sm" placeholder="People" value="" required min="0">
+            <span asp-validation-for="PeopleAmount" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3 mt-3">
             <button class="btn btn-primary" type="submit">Submit</button>
