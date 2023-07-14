@@ -234,6 +234,45 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             }
             return View(nameof(Login));
         }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string? returnUrl)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+            if (ModelState.IsValid)
+            {
+                //get info about theuser from external login provider
+                var info = await _signinManager.GetExternalLoginInfoAsync();
+                if (info == null)
+                {
+                    return RedirectToAction("Error", "Home");
+                    //return View(nameof(Login));
+                }
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name };
+                // create an user
+                var result = await _userManager.CreateAsync(user);
+                if (result.Succeeded)
+                {
+                    result = await _userManager.AddLoginAsync(user, info);
+                    if (result.Succeeded)
+                    {
+                        await _signinManager.SignInAsync(user, isPersistent: false);
+                        await _signinManager.UpdateExternalAuthenticationTokensAsync(info);
+                        return LocalRedirect(returnUrl);
+                    }
+                }
+                AddError(result);
+            }
+            ViewData["ReturnUrl"] = returnUrl;
+            return View(model);
+        }
+        private void AddError(IdentityResult result)
+        {
+            foreach (var Error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, Error.Description);
+            }
+        }
     }
 }
 
