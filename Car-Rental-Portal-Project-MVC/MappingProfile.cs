@@ -15,6 +15,7 @@ namespace Car_Rental_Portal_Project_MVC
             CreateMap<AddCarViewModel, ApplicationCar>().ReverseMap();
             CreateMap<GetCarViewModel, ApplicationCar>().ReverseMap();
             CreateMap<UpdateCarViewModel, ApplicationCar>().ReverseMap();
+            CreateMap<ApplicationCar, GetCarViewModel>();
         }
     }
 }

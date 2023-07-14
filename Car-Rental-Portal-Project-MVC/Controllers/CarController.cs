@@ -1,6 +1,8 @@
-﻿using Car_Rental_Portal_Project_MVC.Data;
+﻿using AutoMapper;
+using Car_Rental_Portal_Project_MVC.Data;
 using Car_Rental_Portal_Project_MVC.Models.Enums;
 using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
+using Car_Rental_Portal_Project_MVC.Services;
 using Car_Rental_Portal_Project_MVC.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,25 +11,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Car_Rental_Portal_Project_MVC.Controllers
 {
-	public class CarController : Controller
-	{
+    public class CarController : Controller
+    {
         private readonly ICarService _carService;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _db;
-        public CarController(ICarService carService, UserManager<IdentityUser> userManager, ApplicationDbContext db)
+        private readonly IMapper _mapper;
+        public CarController(ICarService carService, UserManager<IdentityUser> userManager, ApplicationDbContext db, IMapper mapper)
         {
             _carService = carService;
             _userManager = userManager;
             _db = db;
+            _mapper = mapper;
         }
         public IActionResult CarPage(GetCarViewModel car)
-		{
-			return View(car);
-		}
+        {
+            return View(car);
+        }
 
-		[HttpGet]
-		public async Task<IActionResult> AddCar()
-		{
+        [HttpGet]
+        public async Task<IActionResult> AddCar()
+        {
             List<SelectListItem> transmissionList = new List<SelectListItem>()
             {
                 new SelectListItem() { Value = TransmissionEnum.Manual.ToString(), Text = TransmissionEnum.Manual.ToString() },
@@ -58,7 +62,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
                 ApplicationUser = user
             };
             return View(addCarViewModel);
-		}
+        }
         [HttpPost]
         public async Task<IActionResult> AddCar(AddCarViewModel viewModel)
         {
@@ -71,10 +75,10 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             }
             viewModel.UserId = UserId;
             viewModel.ApplicationUser = user;
-            
-            
+
+
             if (!ModelState.IsValid)
-			{
+            {
                 return View(viewModel);
             }
             var response = await _carService.AddCar(viewModel);
@@ -83,9 +87,65 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
                 return RedirectToAction("Profile", "Account");
             }
 
-            ModelState.AddModelError("Error",$"Message: {response.Message} Description: {response.Description}");
+            ModelState.AddModelError("Error", $"Message: {response.Message} Description: {response.Description}");
             return View(viewModel);
-            
+
         }
+
+        public async Task<ServiceResponse<List<GetCarViewModel>>> GetAllCars(CarFilterViewModel filter)
+        {
+            var response = new ServiceResponse<List<GetCarViewModel>>();
+
+            try
+            {
+                // Retrieve all cars from the database
+                var query = _db.ApplicationCars.AsQueryable();
+
+                // Apply filtering based on the filter criteria
+                if (!string.IsNullOrEmpty(filter.Manufacturer))
+                {
+                    query = query.Where(x => x.Manufacturer.Contains(filter.Manufacturer));
+                }
+
+                if (!string.IsNullOrEmpty(filter.Model))
+                {
+                    query = query.Where(x => x.Model.Contains(filter.Model));
+                }
+
+                if (filter.Year > 0)
+                {
+                    query = query.Where(x => x.Year == filter.Year);
+                }
+
+                if (filter.Price > 0)
+                {
+                    query = query.Where(x => x.Price <= filter.Price);
+                }
+
+                // Apply other filtering conditions based on the remaining properties of the filter model
+
+                // Check if any cars were found
+                var cars = await query.ToListAsync();
+                if (cars == null || cars.Count == 0)
+                {
+                    response.success = false;
+                    response.Message = "No cars found.";
+                    return response;
+                }
+
+                // Map the list of cars to GetCarViewModel
+                response.Data = _mapper.Map<List<GetCarViewModel>>(cars);
+
+                response.Message = "Cars retrieved successfully.";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.success = false;
+                response.Message = "An error occurred while retrieving cars: " + ex.Message;
+                return response;
+            }
+        } 
+
     }
 }
