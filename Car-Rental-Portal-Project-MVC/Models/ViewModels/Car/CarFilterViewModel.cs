@@ -1,4 +1,7 @@
-﻿using Car_Rental_Portal_Project_MVC.Models.Enums;
+﻿using AutoMapper;
+using Car_Rental_Portal_Project_MVC.Data;
+using Car_Rental_Portal_Project_MVC.Models.Enums;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace Car_Rental_Portal_Project_MVC.Models.ViewModels.Car
@@ -39,6 +42,7 @@ namespace Car_Rental_Portal_Project_MVC.Models.ViewModels.Car
         public string Location { get; set; }
         [Required]
         public int PeopleAmount { get; set; }
+        public List<GetCarViewModel> CarsToFilter { get; set; }
 
     }
 }

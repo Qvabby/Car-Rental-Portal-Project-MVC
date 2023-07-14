@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Car_Rental_Portal_Project_MVC.Data;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Google.Apis.Gmail.v1.Data;
 
 public class CarService : ICarService
 {
@@ -89,27 +90,49 @@ public class CarService : ICarService
 
     }
 
-    public async Task<ServiceResponse<List<GetCarViewModel>>> GetAllCars()
+    public async Task<ServiceResponse<List<GetCarViewModel>>> Filter(CarFilterViewModel ViewModel)
     {
         var response = new ServiceResponse<List<GetCarViewModel>>();
 
         try
         {
             // Retrieve all cars from the database
-            var cars = await _dbContext.ApplicationCars.ToListAsync();
+            var query = ViewModel.CarsToFilter.AsQueryable();
+
+            // Apply filtering based on the filter criteria
+            if (!string.IsNullOrEmpty(ViewModel.Manufacturer))
+            {
+                query = query.Where(x => x.Manufacturer.Contains(ViewModel.Manufacturer));
+            }
+
+            if (!string.IsNullOrEmpty(ViewModel.Model))
+            {
+                query = query.Where(x => x.Model.Contains(ViewModel.Model));
+            }
+
+            if (ViewModel.Year > 0)
+            {
+                query = query.Where(x => x.Year == ViewModel.Year);
+            }
+
+            if (ViewModel.Price > 0)
+            {
+                query = query.Where(x => x.Price <= ViewModel.Price);
+            }
+
+            // Apply other filtering conditions based on the remaining properties of the filter model
 
             // Check if any cars were found
+            var cars = await query.ToListAsync();
             if (cars == null || cars.Count == 0)
             {
-                response.success = false;
-                response.Message = "No cars found.";
+                response.Data = null;
+                response.Message = "NotFound";
                 return response;
             }
 
-            // Map the list of cars to a Data
-            response.Data = await _dbContext.ApplicationCars
-            .Select(x => _mapper.Map<GetCarViewModel>(x))
-            .ToListAsync();
+            // Map the list of cars to GetCarViewModel
+            response.Data = _mapper.Map<List<GetCarViewModel>>(cars);
 
             response.Message = "Cars retrieved successfully.";
             return response;

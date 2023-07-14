@@ -91,60 +91,20 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             return View(viewModel);
 
         }
-
-        public async Task<ServiceResponse<List<GetCarViewModel>>> GetAllCars(CarFilterViewModel filter)
+        [HttpPost]
+        public async Task<IActionResult> FilteredCars(CarFilterViewModel viewmodel)
         {
-            var response = new ServiceResponse<List<GetCarViewModel>>();
-
-            try
+            if (viewmodel.CarsToFilter == null)
             {
-                // Retrieve all cars from the database
-                var query = _db.ApplicationCars.AsQueryable();
-
-                // Apply filtering based on the filter criteria
-                if (!string.IsNullOrEmpty(filter.Manufacturer))
-                {
-                    query = query.Where(x => x.Manufacturer.Contains(filter.Manufacturer));
-                }
-
-                if (!string.IsNullOrEmpty(filter.Model))
-                {
-                    query = query.Where(x => x.Model.Contains(filter.Model));
-                }
-
-                if (filter.Year > 0)
-                {
-                    query = query.Where(x => x.Year == filter.Year);
-                }
-
-                if (filter.Price > 0)
-                {
-                    query = query.Where(x => x.Price <= filter.Price);
-                }
-
-                // Apply other filtering conditions based on the remaining properties of the filter model
-
-                // Check if any cars were found
-                var cars = await query.ToListAsync();
-                if (cars == null || cars.Count == 0)
-                {
-                    response.success = false;
-                    response.Message = "No cars found.";
-                    return response;
-                }
-
-                // Map the list of cars to GetCarViewModel
-                response.Data = _mapper.Map<List<GetCarViewModel>>(cars);
-
-                response.Message = "Cars retrieved successfully.";
-                return response;
+                viewmodel.CarsToFilter = _mapper.Map<List<GetCarViewModel>>(_db.ApplicationCars.ToList());
             }
-            catch (Exception ex)
+            
+            var response = await _carService.Filter(viewmodel);
+            if (response.success)
             {
-                response.success = false;
-                response.Message = "An error occurred while retrieving cars: " + ex.Message;
-                return response;
+                return View(response.Data);
             }
+            return NotFound();
         } 
 
     }

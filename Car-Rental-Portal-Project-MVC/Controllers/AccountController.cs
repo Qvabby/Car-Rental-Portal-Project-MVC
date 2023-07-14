@@ -124,7 +124,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             var user = await _db.AplicationUsers
                 .Include(u => u.OwnCars)
                 .FirstOrDefaultAsync(x => x.Id == userid);
-
+            
             var UserModel = _mapper.Map<ProfileViewModel>(user);
             return View(UserModel);
         }

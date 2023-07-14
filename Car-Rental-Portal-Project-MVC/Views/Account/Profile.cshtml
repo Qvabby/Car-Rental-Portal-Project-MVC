@@ -1,6 +1,8 @@
-﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
+﻿@using AutoMapper;
+@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
 @using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
-@model ProfileViewModel 
+@inject IMapper _mapper;
+@model ProfileViewModel
 
 <div class="row">
     <div class="col-12">
@@ -38,9 +40,10 @@
         <div class="row">
             @if (Model.OwnCars.Count > 0)
             {
+                <partial name="_CarFilterPartial" model="new CarFilterViewModel() {CarsToFilter = Model.OwnCars.ToList()}" />
                 @foreach (var car in Model.OwnCars)
                 {
-                    <partial name="_CarFilterPartial" model="new CarFilterViewModel()" />
+
                     <div class="col-4">
                         <img src="@car.Id" class="card-img-top" alt="Car Image">
                         <div class="card-body">

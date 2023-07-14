@@ -1,0 +1,17 @@
+﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
+@model List<GetCarViewModel>
+<div class="row">
+    <div class="col-md-4">
+        <partial name="_CarFilterPartial" model="new CarFilterViewModel()" />
+    </div>
+    <div class="row col-md-8">
+        @foreach (var car in Model)
+        {
+            <div class="col-md-8">
+                <h4>
+                    @car.Manufacturer | @car.Model | @car.Price
+                </h4>
+            </div>
+        }
+    </div>
+</div>

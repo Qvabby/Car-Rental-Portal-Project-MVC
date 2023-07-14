@@ -1,8 +1,8 @@
 ﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
 @using Car_Rental_Portal_Project_MVC.Models.Enums;
 @model CarFilterViewModel
-
-<form class="needs-validation" novalidate>
+<form asp-controller="Car" asp-action="FilteredCars" method="post" class="needs-validation" novalidate>
+    <input asp-for="CarsToFilter"/>
     <div class="form row">
         <div class="form-group col-md-3">
             <label asp-for="Manufacturer">Manufacturer</label>
@@ -81,7 +81,7 @@
             <span asp-validation-for="PeopleAmount" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3 mt-3">
-            <button asp-controller="Car" asp-action="GetAllCars" class="btn btn-primary" type="submit">Submit</button>
+            <button  class="btn btn-primary" type="submit">Submit</button>
         </div>
 
     </div>
