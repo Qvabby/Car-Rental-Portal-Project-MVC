@@ -6,7 +6,6 @@ using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
 using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
 using Car_Rental_Portal_Project_MVC.Services.Interfaces;
 using Google.Apis.Gmail.v1;
-using identityStep.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

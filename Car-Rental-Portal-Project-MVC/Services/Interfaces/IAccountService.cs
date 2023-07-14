@@ -1,6 +1,6 @@
-﻿using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
+﻿using Car_Rental_Portal_Project_MVC.Models;
+using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
 using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
-using identityStep.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Car_Rental_Portal_Project_MVC.Services.Interfaces

@@ -30,11 +30,17 @@ namespace Car_Rental_Portal_Project_MVC
 
             builder.Services.AddAuthentication().AddGoogle(options =>
             {
-                options.ClientId = "266771232428-njtbgruudcfoarv6molq72tk6rc154ou.apps.googleusercontent.com";
-                options.ClientSecret = "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";
+                options.ClientId = "266771232428-arud199auk3tm2na2i1n16lt7gsqb7t0.apps.googleusercontent.com";
+                options.ClientSecret = "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";
             }
                );
 
+            builder.Services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = "139245012346424";
+                options.AppSecret = "267c8d850d4cd8596b7948b21b271ec5";
+            }
+);
 
 
             //Adding Identity To Application.

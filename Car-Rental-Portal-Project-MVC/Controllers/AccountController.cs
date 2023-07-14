@@ -1,18 +1,13 @@
 ﻿using AutoMapper;
 using Car_Rental_Portal_Project_MVC.Data;
 using Car_Rental_Portal_Project_MVC.Models.ViewModels.Account;
-using Car_Rental_Portal_Project_MVC.Services;
-using Car_Rental_Portal_Project_MVC.Services.Implementations;
 using Car_Rental_Portal_Project_MVC.Services.Interfaces;
-using identityStep.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using System;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using System.Text.Encodings.Web;
+using Car_Rental_Portal_Project_MVC.Models;
 
 namespace Car_Rental_Portal_Project_MVC.Controllers
 {
