@@ -92,6 +92,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
 
         }
         [HttpPost]
+        [Route("Car/FilteredCars")]
         public async Task<IActionResult> FilteredCars(CarFilterViewModel viewmodel)
         {
             if (viewmodel.CarsToFilter == null)

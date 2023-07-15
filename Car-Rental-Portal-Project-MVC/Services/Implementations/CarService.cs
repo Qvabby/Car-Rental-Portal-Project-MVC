@@ -90,40 +90,71 @@ public class CarService : ICarService
 
     }
 
-    public async Task<ServiceResponse<List<GetCarViewModel>>> Filter(CarFilterViewModel ViewModel)
+    public async Task<ServiceResponse<List<GetCarViewModel>>> Filter(CarFilterViewModel viewModel)
     {
         var response = new ServiceResponse<List<GetCarViewModel>>();
 
         try
         {
-            // Retrieve all cars from the database
-            var query = ViewModel.CarsToFilter.AsQueryable();
+            var query = viewModel.CarsToFilter.AsQueryable();
 
-            // Apply filtering based on the filter criteria
-            if (!string.IsNullOrEmpty(ViewModel.Manufacturer))
+            if (!string.IsNullOrEmpty(viewModel.Manufacturer))
             {
-                query = query.Where(x => x.Manufacturer.Contains(ViewModel.Manufacturer));
+                query = query.Where(x => x.Manufacturer.Contains(viewModel.Manufacturer));
             }
 
-            if (!string.IsNullOrEmpty(ViewModel.Model))
+            if (!string.IsNullOrEmpty(viewModel.Model))
             {
-                query = query.Where(x => x.Model.Contains(ViewModel.Model));
+                query = query.Where(x => x.Model.Contains(viewModel.Model));
             }
 
-            if (ViewModel.Year > 0)
+            if (viewModel.Year > 0)
             {
-                query = query.Where(x => x.Year == ViewModel.Year);
+                query = query.Where(x => x.Year == viewModel.Year);
             }
 
-            if (ViewModel.Price > 0)
+            if (viewModel.Price > 0)
             {
-                query = query.Where(x => x.Price <= ViewModel.Price);
+                query = query.Where(x => x.Price <= viewModel.Price);
             }
 
-            // Apply other filtering conditions based on the remaining properties of the filter model
+            if (viewModel.Engine > 0)
+            {
+                query = query.Where(x => x.Engine == viewModel.Engine);
+            }
 
-            // Check if any cars were found
+            if (viewModel.Transmission != 0)
+            {
+                query = query.Where(x => x.Transmission == viewModel.Transmission);
+            }
+
+            if (viewModel.FuelType != 0)
+            {
+                query = query.Where(x => x.FuelType == viewModel.FuelType);
+            }
+
+            if (viewModel.FuelTank > 0)
+            {
+                query = query.Where(x => x.FuelTank == viewModel.FuelTank);
+            }
+
+            if (viewModel.WheelType != 0)
+            {
+                query = query.Where(x => x.WheelType == viewModel.WheelType);
+            }
+
+            if (!string.IsNullOrEmpty(viewModel.Location))
+            {
+                query = query.Where(x => x.Location.Contains(viewModel.Location));
+            }
+
+            if (viewModel.PeopleAmount > 0)
+            {
+                query = query.Where(x => x.PeopleAmount == viewModel.PeopleAmount);
+            }
+
             var cars = await query.ToListAsync();
+
             if (cars == null || cars.Count == 0)
             {
                 response.Data = null;
@@ -131,9 +162,7 @@ public class CarService : ICarService
                 return response;
             }
 
-            // Map the list of cars to GetCarViewModel
             response.Data = _mapper.Map<List<GetCarViewModel>>(cars);
-
             response.Message = "Cars retrieved successfully.";
             return response;
         }
@@ -144,6 +173,8 @@ public class CarService : ICarService
             return response;
         }
     }
+
+
 
     public async Task<ServiceResponse<GetCarViewModel>> GetCarById(int id)
     {
