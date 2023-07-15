@@ -99,14 +99,45 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             {
                 viewmodel.CarsToFilter = _mapper.Map<List<GetCarViewModel>>(_db.ApplicationCars.ToList());
             }
-            
+
             var response = await _carService.Filter(viewmodel);
             if (response.success)
             {
                 return View(response.Data);
             }
             return NotFound();
-        } 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCar(UpdateCarViewModel car)
+        {
+            var response = await _carService.UpdateCar(car);
+            if (response.success)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            ModelState.AddModelError("Error", $"Failed to update car: {response.Message}");
+            return View(car);
+        }
+
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCar(int id)
+        {
+            var response = await _carService.DeleteCar(id);
+
+            if (response.success)
+            {
+                return RedirectToAction("Profile", "Account");
+            }
+            else
+            {
+                ModelState.AddModelError("Error", response.Message);
+                return View(); 
+
+            }
+        }
 
     }
 }

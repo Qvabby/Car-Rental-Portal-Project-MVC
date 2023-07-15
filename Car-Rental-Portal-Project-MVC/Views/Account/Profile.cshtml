@@ -36,11 +36,15 @@
                 Your Cars
             </h5>
             <!-- Button For Adding Cars. -->
+  @*===============        Tvini momityna am filteris Partialma da cotaxnit vakomentareb ================> *@
+           @* <div class="col-12 row">
+                <partial name="_CarFilterPartial" model="new CarFilterViewModel() {CarsToFilter = Model.OwnCars.ToList()}" />
+
+            </div>*@
         </div>
         <div class="row">
             @if (Model.OwnCars.Count > 0)
             {
-                <partial name="_CarFilterPartial" model="new CarFilterViewModel() {CarsToFilter = Model.OwnCars.ToList()}" />
                 @foreach (var car in Model.OwnCars)
                 {
 
@@ -58,6 +62,16 @@
                                 <p>Open for rent.</p>
                             }
                         </div>
+                        <form asp-controller="Car" asp-action="UpdateCar" method="post" class="needs-validation" novalidate>
+                            <div class="card-footer">
+                                <button class="btn btn-warning" type="submit">Edit Car</button>
+                            </div>
+                        </form>
+                        <form asp-controller="Car" asp-action="DeleteCar" method="post" class="needs-validation" novalidate>
+                            <div class="card-footer">
+                                <button class="btn btn-danger" type="submit">Delete Car</button>
+                            </div>
+                        </form>
                     </div>
                 }
                 <a style="font-size:64px;color:black; display:contents" class="bi bi-plus-square ms-1" asp-controller="Car" asp-action="AddCar"></a>

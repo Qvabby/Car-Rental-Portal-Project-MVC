@@ -3,7 +3,7 @@
 @model CarFilterViewModel
 
 <form asp-controller="Car" asp-action="FilteredCars" method="post" class="needs-validation" novalidate>
-
+    <input asp-for="CarsToFilter"/>
     <div class="form row">
         <div class="form-group col-md-3">
             <label asp-for="Manufacturer">Manufacturer</label>
