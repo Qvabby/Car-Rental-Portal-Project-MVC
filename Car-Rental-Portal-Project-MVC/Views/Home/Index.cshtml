@@ -1,5 +1,6 @@
 ﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
 @using Microsoft.AspNetCore.Mvc.Rendering
+@model List<GetCarViewModel>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -24,13 +25,10 @@
             <div class="col-12">something here.</div>
             <img src="" alt="Image here." />
         </div>
-        <partial name="_CarFilterPartial" model="new CarFilterViewModel()" />
+        <partial name="_CarFilterPartial" model="new CarFilterViewModel() {CarsToFilter = Model}" />
     </div>
+    <hr />
     <div class="row">
-        @foreach (var car in Model)
-        {
-            <div class="col-md-4">
-                @Html.Partial("CarCar_Partial", (GetCarViewModel)car)
-            </div>
-        }
+        <partial name="CarCard_Partial" model="Model" />
+    </div>
 </div>

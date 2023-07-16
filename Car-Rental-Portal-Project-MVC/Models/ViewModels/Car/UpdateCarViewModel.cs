@@ -8,6 +8,8 @@ namespace Car_Rental_Portal_Project_MVC.Models.ViewModels.Car
     {
         public int Id { get; set; }
         [Required]
+        public string ImageUrl { get; set; }
+        [Required]
         [StringLength(20)]
         public string Manufacturer { get; set; }
         [Required]
@@ -18,7 +20,7 @@ namespace Car_Rental_Portal_Project_MVC.Models.ViewModels.Car
         [Range(1900, 2023)]
         public int Year { get; set; }
         [Required]
-        [MaxLength(99999)]
+        [Range(0, 99999)]
         public decimal Price { get; set; }
         [Required]
         [RegularExpression(@"^[0-9]*(?:\.[0-9]*)?$")]
@@ -42,7 +44,7 @@ namespace Car_Rental_Portal_Project_MVC.Models.ViewModels.Car
         public string Location { get; set; }
         [Required]
         public int PeopleAmount { get; set; }
-        public string HiredByUserId { get; set; }
-        public string Description { get; set; }
+        public string? HiredByUserId { get; set; }
+        public string? Description { get; set; }
     }
 }

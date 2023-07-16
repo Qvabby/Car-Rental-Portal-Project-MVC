@@ -24,11 +24,12 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             _db = db;
             _mapper = mapper;
         }
-        public IActionResult CarPage(GetCarViewModel car)
+        [HttpGet]
+        public async Task<IActionResult> CarPage(int id)
         {
+            var car = _mapper.Map<GetCarViewModel>( await _db.ApplicationCars.FirstOrDefaultAsync(x => x.Id == id));
             return View(car);
         }
-
         [HttpGet]
         public async Task<IActionResult> AddCar()
         {
@@ -59,7 +60,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
                 FuelTypeList = fuelTypeList,
                 WheelTypeList = wheelTypeList,
                 UserId = UserId,
-                ApplicationUser = user
+                ApplicationUser = user,
             };
             return View(addCarViewModel);
         }
@@ -71,7 +72,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             var user = await _db.AplicationUsers.FirstOrDefaultAsync(x => x.Id == UserId);
             if (user != null)
             {
-                ModelState.Root.Children[12].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
+                ModelState.Root.Children[13].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
             }
             viewModel.UserId = UserId;
             viewModel.ApplicationUser = user;
@@ -92,10 +93,9 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
 
         }
         [HttpPost]
-        [Route("Car/FilteredCars")]
         public async Task<IActionResult> FilteredCars(CarFilterViewModel viewmodel)
         {
-            if (viewmodel.CarsToFilter == null)
+            if (viewmodel.CarsToFilter.Count == 0)
             {
                 viewmodel.CarsToFilter = _mapper.Map<List<GetCarViewModel>>(_db.ApplicationCars.ToList());
             }
@@ -103,25 +103,32 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             var response = await _carService.Filter(viewmodel);
             if (response.success)
             {
-                return View(response.Data);
+                return FilteredCars(response.Data);
             }
             return NotFound();
+        }public IActionResult FilteredCars(List<GetCarViewModel> data)
+        {
+            return View(data);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> UpdateCar(int id)
+        {
+            var car = _mapper.Map<UpdateCarViewModel>(await _db.ApplicationCars.FirstOrDefaultAsync(x => x.Id == id));
+            return View(car);
+        }
         [HttpPost]
         public async Task<IActionResult> UpdateCar(UpdateCarViewModel car)
         {
             var response = await _carService.UpdateCar(car);
             if (response.success)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Profile", "Account");
             }
 
             ModelState.AddModelError("Error", $"Failed to update car: {response.Message}");
             return View(car);
         }
-
-
         [HttpDelete]
         public async Task<IActionResult> DeleteCar(int id)
         {
@@ -138,6 +145,5 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
 
             }
         }
-
     }
 }

@@ -3,61 +3,53 @@
 @model CarFilterViewModel
 
 <form asp-controller="Car" asp-action="FilteredCars" method="post" class="needs-validation" novalidate>
-    <input asp-for="CarsToFilter"/>
+    <input asp-for="CarsToFilter" hidden/>
     <div class="form row">
         <div class="form-group col-md-3">
             <label asp-for="Manufacturer">Manufacturer</label>
             <input asp-for="Manufacturer" class="form-control form-control-sm" placeholder="Manufacturer" value="" required>
-            <span asp-validation-for="Manufacturer" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="Model">Model</label>
             <input asp-for="Model" class="form-control form-control-sm"placeholder="Model" value="" required>
-            <span asp-validation-for="Model" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="Year">Year</label>
             <input asp-for="Year" class="form-control form-control-sm" placeholder="Year" value="" required min="1900" max="2023">
-            <span asp-validation-for="Year" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="Price">Price</label>
             <input asp-for="Price" class="form-control form-control-sm" placeholder="Price" value="" required min="0">
-            <span asp-validation-for="Price" class="text-danger"></span>
         </div>
     </div>
     <div class="form row">
         <div class="form-group col-md-3">
             <label asp-for="Engine">Engine</label>
             <input asp-for="Engine" class="form-control form-control-sm" placeholder="Engine" value="" required step="0.1" min="1.0">
-            <span asp-validation-for="Engine" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="Transmission">Transmission</label>
-            <select asp-for="Transmission" class="form-control form-control-sm" id="validationTooltip06" required>
-                <option value="" selected disabled>Select</option>
+            <select asp-for="Transmission" class="form-control form-control-sm" required>
+                <option value="" selected > </option>
                 @foreach (var transmissionValue in Enum.GetValues(typeof(TransmissionEnum)))
                 {
                     <option value="@transmissionValue">@transmissionValue.ToString()</option>
                 }
             </select>
-            <span asp-validation-for="Transmission" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="FuelType">Fuel Type</label>
             <select asp-for="FuelType" class="form-control form-control-sm" id="validationTooltip07" required>
-                <option value="" selected disabled>Select</option>
+                <option value="" selected > </option>
                 @foreach (var fuelTypeValue in Enum.GetValues(typeof(FuelTypeEnum)))
                 {
                     <option value="@fuelTypeValue">@fuelTypeValue.ToString()</option>
                 }
             </select>
-            <span asp-validation-for="FuelType" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="FuelTank">Fuel Tank</label>
             <input asp-for="FuelTank" class="form-control form-control-sm" placeholder="Tank" value="" required>
-            <span asp-validation-for="FuelTank" class="text-danger"></span>
         </div>
     </div>
     
@@ -65,21 +57,20 @@
         <div class="form-group col-md-3">
             <label asp-for="WheelType">Wheel Type</label>
             <select class="form-control form-control-sm" asp-for="WheelType" required>
-                <option value="" selected disabled>Select</option>
-                <option value="1">Left</option>
-                <option value="2">Right</option>
+                <option value="" selected > </option>
+                @foreach (var WheelTypeValue in Enum.GetValues(typeof(WheelTypeEnum)))
+                {
+                    <option value="@WheelTypeValue">@WheelTypeValue.ToString()</option>
+                }
             </select>
-            <span asp-validation-for="WheelType" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="Location">Location</label>
             <input asp-for="Location" class="form-control form-control-sm" placeholder="Location" value="" required>
-            <span asp-validation-for="Location" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3">
             <label asp-for="PeopleAmount">People Amount</label>
             <input asp-for="PeopleAmount" class="form-control form-control-sm" placeholder="People" value="" required min="0">
-            <span asp-validation-for="PeopleAmount" class="text-danger"></span>
         </div>
         <div class="form-group col-md-3 mt-3">
             <button  class="btn btn-primary" type="submit">Submit</button>
@@ -88,12 +79,3 @@
     </div>
 
 </form>
-
-
-
-@section Scripts{
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-
-}

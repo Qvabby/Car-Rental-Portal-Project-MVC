@@ -123,12 +123,12 @@ public class CarService : ICarService
                 query = query.Where(x => x.Engine == viewModel.Engine);
             }
 
-            if (viewModel.Transmission != 0)
+            if (!string.IsNullOrWhiteSpace(viewModel.Transmission.ToString()))
             {
                 query = query.Where(x => x.Transmission == viewModel.Transmission);
             }
 
-            if (viewModel.FuelType != 0)
+            if (!string.IsNullOrWhiteSpace(viewModel.FuelType.ToString()))
             {
                 query = query.Where(x => x.FuelType == viewModel.FuelType);
             }
@@ -138,7 +138,7 @@ public class CarService : ICarService
                 query = query.Where(x => x.FuelTank == viewModel.FuelTank);
             }
 
-            if (viewModel.WheelType != 0)
+            if (!string.IsNullOrWhiteSpace(viewModel.WheelType.ToString()))
             {
                 query = query.Where(x => x.WheelType == viewModel.WheelType);
             }
@@ -153,7 +153,7 @@ public class CarService : ICarService
                 query = query.Where(x => x.PeopleAmount == viewModel.PeopleAmount);
             }
 
-            var cars = await query.ToListAsync();
+            var cars = query.ToList();
 
             if (cars == null || cars.Count == 0)
             {

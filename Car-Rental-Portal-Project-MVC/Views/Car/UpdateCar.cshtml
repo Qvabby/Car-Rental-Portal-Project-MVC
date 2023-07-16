@@ -1,4 +1,5 @@
-﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
+﻿@using Car_Rental_Portal_Project_MVC.Models.Enums;
+@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
 @model UpdateCarViewModel
 
 <h2>Update Your Car.</h2>
@@ -7,6 +8,8 @@
     <form asp-controller="Car" asp-action="UpdateCar" class="form-control" method="post" class="form">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group row">
+            <input asp-for="ImageUrl" />
+            <input asp-for="HiredByUserId"  />
             <div class="form-group">
                 <label asp-for="Manufacturer">Manufacturer</label>
                 <input asp-for="Manufacturer" class="form-control" />
@@ -39,26 +42,24 @@
 
             <div class="form-group">
                 <label asp-for="Transmission">Transmission</label>
-                <select asp-for="Transmission" asp-items="@Model.TransmissionList" class="form-control">
-                    <option disabled selected> -- select role --</option>
+                <select asp-for="Transmission" class="form-control form-control-sm" id="validationTooltip06" required>
+                    <option value="" selected disabled>Select</option>
+                    @foreach (var transmissionValue in Enum.GetValues(typeof(TransmissionEnum)))
+                    {
+                        <option value="@transmissionValue">@transmissionValue.ToString()</option>
+                    }
                 </select>
-
-
-                @*<label asp-for="Transmission"></label>
-                <input asp-for="Transmission" type="text" class="form-control" />
-                <span asp-validation-for="Transmission" class="text-danger"></span>*@
-
-
             </div>
 
             <div class="form-group">
                 <label asp-for="FuelType">Fuel Type</label>
-                <select asp-for="FuelType" asp-items="@Model.FuelTypeList" class="form-control">
-                    <option disabled selected> -- select role --</option>
+                <select asp-for="FuelType" class="form-control form-control-sm" id="validationTooltip07" required>
+                    <option value="" selected disabled>Select</option>
+                    @foreach (var fuelTypeValue in Enum.GetValues(typeof(FuelTypeEnum)))
+                    {
+                        <option value="@fuelTypeValue">@fuelTypeValue.ToString()</option>
+                    }
                 </select>
-                @*<label asp-for="FuelType">FuelType</label>
-                <input asp-for="FuelType" class="form-control" />
-                <span asp-validation-for="FuelType" class="text-danger"></span>*@
             </div>
 
             <div class="form-group">
@@ -69,13 +70,13 @@
 
             <div class="form-group">
                 <label asp-for="WheelType">Wheel Type</label>
-                <select asp-for="WheelType" asp-items="@Model.WheelTypeList" class="form-control">
-                    <option disabled selected> -- select role --</option>
+                <select class="form-control form-control-sm" asp-for="WheelType" required>
+                    <option value="" selected disabled>Select</option>
+                    @foreach (var WheelTypeValue in Enum.GetValues(typeof(WheelTypeEnum)))
+                    {
+                        <option value="@WheelTypeValue">@WheelTypeValue.ToString()</option>
+                    }
                 </select>
-
-                @*<label asp-for="WheelType">WheelType</label>
-                <input asp-for="WheelType" class="form-control" />
-                <span asp-validation-for="WheelType" class="text-danger"></span>*@
             </div>
 
             <div class="form-group">

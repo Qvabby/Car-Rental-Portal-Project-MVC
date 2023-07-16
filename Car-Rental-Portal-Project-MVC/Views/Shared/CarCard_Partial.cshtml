@@ -1,15 +1,21 @@
 ﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
-@model GetCarViewModel
-
-<div class="card" style="width: 18rem;">
-    <img src="@Model.ImageUrl" class="card-img-top" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">@Model.Manufacturer</h5>
-        <p class="card-text">@Model.Description</p>
-        <p class="card-text">@Model.Location</p>
-        <a href="#" class="btn btn-primary">Recent now</a>
+@model List<GetCarViewModel>
+@foreach (var car in Model)
+{
+    <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+            <img src="@car.ImageUrl" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">@car.Manufacturer</h5>
+                <p class="card-text">@car.Description</p>
+                <p class="card-text">@car.Location</p>
+                <a asp-controller="Car" asp-action="CarPage" asp-route-id="@car.Id" class="btn btn-warning">View Car</a>
+            </div>
+        </div>
     </div>
-</div>
+}
+
+
 @section Scripts{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
