@@ -8,6 +8,8 @@ namespace Car_Rental_Portal_Project_MVC.Models
     {  
         public int Id { get; set; }
         [Required]
+        public string ImageUrl { get; set; }
+        [Required]
         [StringLength(20)]
         public string Manufacturer { get; set; }
         [Required]

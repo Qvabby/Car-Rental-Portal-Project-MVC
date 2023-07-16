@@ -1,0 +1,18 @@
+﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
+@model GetCarViewModel
+
+<div class="card" style="width: 18rem;">
+    <img src="@Model.ImageUrl" class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Manufacturer</h5>
+        <p class="card-text">@Model.Description</p>
+        <p class="card-text">@Model.Location</p>
+        <a href="#" class="btn btn-primary">Recent now</a>
+    </div>
+</div>
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

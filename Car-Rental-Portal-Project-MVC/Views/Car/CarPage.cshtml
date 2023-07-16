@@ -2,6 +2,10 @@
 @model GetCarViewModel
 <div class="row">
     <div class="col-md-8">
+        <img src="@Model.ImageUrl" class="img-fluid" alt="Responsive image">
+
+    </div>
+    <div class="col-md-8">
         <h2>
             @Model.Manufacturer | @Model.Model | @Model.Year
         </h2>
