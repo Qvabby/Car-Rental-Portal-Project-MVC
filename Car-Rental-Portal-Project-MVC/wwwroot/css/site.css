@@ -76,12 +76,21 @@ body {
     text-decoration: none;
 }
 
-    .card-add i {
+ .card-add i {
         font-size: 64px;
-    }
+ }
 .card {
     
 }
 .profilecard {
     height: 100%;
+}
+.Car-title {
+    font-family: "Arial", sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+}
+.Car-text {
+    font-family: "Verdana", sans-serif;
+    font-size: 16px;
 }
