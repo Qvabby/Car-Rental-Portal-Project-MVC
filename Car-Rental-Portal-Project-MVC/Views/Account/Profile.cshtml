@@ -12,23 +12,33 @@
     </div>
     <hr />
     <div class="col-md-4">
-        <div class="card">
-            <div class="card-header bg-dark text-white">
-                <h5 class="text-center">
-                    @Model.Username
-                </h5>
+       
+            <div class="card text-center bg-dark">
+                <div class="card-body">
+                    <h5 class="card-title text-white">Profile Information</h5>
+                    <div class="form-group">
+                        <label class="text-muted text-white font-size-large">Username:</label>
+                        <p class="form-text text-white font-size-medium text-left">@Model.Username</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-muted text-white font-size-medium">Full Name:</label>
+                        <p class="form-text text-white font-size-small text-left">@Model.LastName</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-muted text-white font-size-medium">Email:</label>
+                        <p class="form-text text-white font-size-small text-left">@Model.Email</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-muted text-white font-size-medium">Phone:</label>
+                        <p class="form-text text-white font-size-small text-left">@Model.PhoneNumber</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#" class="btn btn-primary">Edit Profile</a>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <h6>Information:</h6>
-                <p>Username: @Model.Username</p>
-                <p>Full Name: @Model.Name @Model.LastName</p>
-                <p>Email: @Model.Email</p>
-                <p>Phone: @Model.PhoneNumber</p>
-            </div>
-            <div class="card-footer">
-                <a href="#" class="btn btn-warning">Edit Profile</a>
-            </div>
-        </div>
+      
+
     </div>
     <div class="col-md-8">
         <div class="col-12">
