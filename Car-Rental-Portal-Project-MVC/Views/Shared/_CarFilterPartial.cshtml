@@ -2,9 +2,9 @@
 @using Car_Rental_Portal_Project_MVC.Models.Enums;
 @model CarFilterViewModel
 
-<form asp-controller="Car" asp-action="FilteredCars" method="post" class="needs-validation" novalidate>
+    <form asp-controller="Car" asp-action="FilteredCars" method="post" class="needs-validation" novalidate >
     <input asp-for="CarsToFilter" hidden/>
-    <div class="form row">
+    <div class="form row" >
         <div class="form-group col-md-3">
             <label asp-for="Manufacturer">Manufacturer</label>
             <input asp-for="Manufacturer" class="form-control form-control-sm" placeholder="Manufacturer" value="" required>
@@ -73,7 +73,7 @@
             <input asp-for="PeopleAmount" class="form-control form-control-sm" placeholder="People" value="" required min="0">
         </div>
         <div class="form-group col-md-3 mt-3">
-            <button  class="btn btn-primary" type="submit">Submit</button>
+            <button type="button" class="btn btn-outline-warning">Submit</button>
         </div>
 
     </div>

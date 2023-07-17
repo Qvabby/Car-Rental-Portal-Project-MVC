@@ -4,10 +4,11 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<div class="container-fluid">
-    <div class="text-center MAINPAGECONTAINER p-2">
+<div class="container-fluid" style="background: linear-gradient(to right, #010621, #1C2340);">
+
+    <div class="text-center MAINPAGECONTAINER p-2" style="background: #0b0030;">
         <div class="row justify-content-center">
-            <div class="col-12">
+            <div class="col-12" style="background: linear-gradient(to right, #010621, #1C2340); color:darkorange">
                 <h1 class="display-4">Car Rental</h1>
             </div>
         </div>
@@ -25,8 +26,8 @@
                     </div>*@               
             </div>
         </div>
-        <hr class="my-4" />
-        <div class="row justify-content-center">
+        <hr class="my-4" style="color:darkorange" />
+        <div class="row justify-content-center" style="background: #010621;">
             <div class="col-md-10 bg-dark text-white p-3">
                 <partial name="_CarFilterPartial" model="new CarFilterViewModel() {CarsToFilter = Model}" />
             </div>
