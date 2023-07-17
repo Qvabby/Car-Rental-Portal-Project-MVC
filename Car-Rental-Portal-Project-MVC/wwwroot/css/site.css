@@ -7,7 +7,6 @@ html {
         font-size: 16px;
     }
 }
-
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -21,8 +20,48 @@ html {
 body {
     height: 100%;
     min-height: 100%;
+    background-color: #fff8f2;
 }
 
 .footer {
     margin-top: auto;
+}
+
+.banner-image {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.image-container {
+    height: 400px; /* Set the desired height */
+    object-fit: cover; /* Maintain aspect ratio and crop if necessary */
+    width: 100%;
+}
+
+.banner-image .banner-text {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #fff;
+}
+
+.MAINPAGECONTAINER {
+    background-color: #fff8f2;
+}
+
+.card-depth {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow effect */
+    background-color: #f9f6f4; /* Set lighter background color */
+}
+
+.card-title {
+    color: #007bff; /* Set primary text color */
+}
+
+.card-text {
+    color: #6c757d; /* Set secondary text color */
 }

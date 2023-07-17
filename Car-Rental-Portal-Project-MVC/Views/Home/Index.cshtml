@@ -4,31 +4,36 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="display-6">Car Rental Main Page</h1>
-        </div>
-        <div class="col-12">
-            <hr>
-        </div>
-        <div class="col-8">
-            <div class="text-black">
-                <h4>Info</h4>
-                <p>
-                    Welcome to our Car Rental Website, Here you can search for cars to rent or Register and Rent your own cars!
-                </p>
+<div class="container-fluid">
+    <div class="text-center MAINPAGECONTAINER p-2">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <h1 class="display-4">Car Rental</h1>
             </div>
         </div>
-        <div class="col-4">
-            <div class="col-12">something here.</div>
-            <img src="" alt="Image here." />
+        <hr class="my-4" />
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="banner-image">
+                    <img src="https://www.supercars.net/blog/wp-content/uploads/2020/09/wallpaperflare.com_wallpaper-1-1.jpg" alt="Image here" class="img-fluid image-container" />
+                    <div class="row banner-text ms-1">
+                        <h3 class="display-5">Welcome To Car Rental</h3>
+                        <p class="lead col-md-12">
+                            Whether you're planning a weekend getaway, embarking on a thrilling road trip, or simply looking for a reliable set of wheels for your daily commute, we've got you covered. Explore our extensive selection of top-notch vehicles, register to rent your own cars, and enjoy a seamless and satisfying rental experience.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <partial name="_CarFilterPartial" model="new CarFilterViewModel() {CarsToFilter = Model}" />
-    </div>
-    <hr />
-    <div class="row">
-        <partial name="CarCard_Partial" model="Model" />
+        <hr class="my-4" />
+        <div class="row justify-content-center">
+            <div class="col-md-10 bg-dark text-white p-3">
+                <partial name="_CarFilterPartial" model="new CarFilterViewModel() {CarsToFilter = Model}" />
+            </div>
+        </div>
+        <hr class="my-4" />
+        <div class="row justify-content-center">
+            <partial name="CarCard_Partial" model="Model" />
+        </div>
     </div>
 </div>
