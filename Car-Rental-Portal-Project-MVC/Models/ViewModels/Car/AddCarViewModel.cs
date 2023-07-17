@@ -47,7 +47,7 @@ namespace Car_Rental_Portal_Project_MVC.Models.ViewModels.Car
         public string? HiredByUserId { get; set; }
         public string? Description { get; set; }
         //relations
-        public string UserId { get; set; }
+        public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
     }
 }

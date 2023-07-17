@@ -27,7 +27,10 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> CarPage(int id)
         {
-            var car = _mapper.Map<GetCarViewModel>( await _db.ApplicationCars.FirstOrDefaultAsync(x => x.Id == id));
+            var car = _mapper.Map<GetCarViewModel>( 
+                await _db.ApplicationCars
+                .Include(x => x.ApplicationUser)
+                .FirstOrDefaultAsync(x => x.Id == id));
             return View(car);
         }
         [HttpGet]
@@ -59,7 +62,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
                 TransmissionList = transmissionList,
                 FuelTypeList = fuelTypeList,
                 WheelTypeList = wheelTypeList,
-                UserId = UserId,
+                ApplicationUserId = UserId,
                 ApplicationUser = user,
             };
             return View(addCarViewModel);
@@ -72,9 +75,9 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             var user = await _db.AplicationUsers.FirstOrDefaultAsync(x => x.Id == UserId);
             if (user != null)
             {
-                ModelState.Root.Children[13].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
+                ModelState.Root.Children[12].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
             }
-            viewModel.UserId = UserId;
+            viewModel.ApplicationUserId = UserId;
             viewModel.ApplicationUser = user;
 
 

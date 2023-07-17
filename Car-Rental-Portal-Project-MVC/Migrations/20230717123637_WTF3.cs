@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Car_Rental_Portal_Project_MVC.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedDbContextAndApplicationUserIdentity : Migration
+    public partial class WTF3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,6 +71,39 @@ namespace Car_Rental_Portal_Project_MVC.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationCars",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Manufacturer = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    Engine = table.Column<float>(type: "real", nullable: false),
+                    Transmission = table.Column<int>(type: "int", nullable: false),
+                    FuelType = table.Column<int>(type: "int", nullable: false),
+                    FuelTank = table.Column<int>(type: "int", nullable: false),
+                    WheelType = table.Column<int>(type: "int", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    PeopleAmount = table.Column<int>(type: "int", nullable: false),
+                    HiredByUserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationCars", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ApplicationCars_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -161,6 +194,11 @@ namespace Car_Rental_Portal_Project_MVC.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ApplicationCars_ApplicationUserId",
+                table: "ApplicationCars",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -203,6 +241,9 @@ namespace Car_Rental_Portal_Project_MVC.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ApplicationCars");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

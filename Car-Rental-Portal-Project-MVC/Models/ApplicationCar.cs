@@ -1,6 +1,8 @@
 ﻿using Car_Rental_Portal_Project_MVC.Models.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Car_Rental_Portal_Project_MVC.Models
 {
@@ -20,8 +22,8 @@ namespace Car_Rental_Portal_Project_MVC.Models
         [Range(1900, 2023)]
         public int Year { get; set; }
         [Required]
-        [MaxLength(99999)]
-        public decimal Price { get; set; }
+        [Range(0,9999)]
+        public int Price { get; set; }
         [Required]
         public float Engine { get; set; }
         [Required]
@@ -41,7 +43,7 @@ namespace Car_Rental_Portal_Project_MVC.Models
         //for view
         public string? Description { get; set; }
         //relations
-        public string UserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; } = null!;
     }
 }

@@ -1,17 +1,32 @@
 ﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
 @model List<GetCarViewModel>
+
 <div class="row">
     <div class="col-md-4">
-        <partial name="_CarFilterPartial" model="new CarFilterViewModel()" />
-    </div>
-    <div class="row col-md-8">
-        @foreach (var car in Model)
-        {
-            <div class="col-md-8">
-                <h4>
-                    @car.Manufacturer | @car.Model | @car.Price
-                </h4>
+        <div class="card mb-4">
+            <div class="card-body">
+                <partial name="_CarFilterPartial" model="new CarFilterViewModel()" />
             </div>
-        }
+        </div>
+    </div>
+    <div class="col-md-8 ">
+        <div class="row">
+            @foreach (var car in Model)
+            {
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <div class="card h-100">
+                        <img src="@car.ImageUrl" class="card-img-top" alt="Car Image">
+                        <div class="card-body row">
+                            <div class="col-md-9">
+                                <h5 class="card-title">@car.Manufacturer | @car.Model | @car.Price</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <a asp-controller="Car" asp-action="CarPage" asp-route-id="@car.Id" class="btn btn-success">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>

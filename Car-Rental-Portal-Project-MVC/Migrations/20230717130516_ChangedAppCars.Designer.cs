@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Car_Rental_Portal_Project_MVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230711185448_UpdatedCarTable")]
-    partial class UpdatedCarTable
+    [Migration("20230717130516_ChangedAppCars")]
+    partial class ChangedAppCars
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,8 +33,11 @@ namespace Car_Rental_Portal_Project_MVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
+                    b.Property<string>("ApplicationUserId")
                         .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Engine")
@@ -47,6 +50,9 @@ namespace Car_Rental_Portal_Project_MVC.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("HiredByUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -68,27 +74,21 @@ namespace Car_Rental_Portal_Project_MVC.Migrations
                     b.Property<int>("PeopleAmount")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasMaxLength(99999)
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.Property<int>("Transmission")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("WheelType")
                         .HasColumnType("int");
 
                     b.Property<int>("Year")
-                        .HasMaxLength(2023)
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("ApplicationCars");
                 });
@@ -320,8 +320,8 @@ namespace Car_Rental_Portal_Project_MVC.Migrations
             modelBuilder.Entity("Car_Rental_Portal_Project_MVC.Models.ApplicationCar", b =>
                 {
                     b.HasOne("Car_Rental_Portal_Project_MVC.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("OwnCars")
-                        .HasForeignKey("UserId")
+                        .WithMany("ApplicationCars")
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -381,7 +381,7 @@ namespace Car_Rental_Portal_Project_MVC.Migrations
 
             modelBuilder.Entity("Car_Rental_Portal_Project_MVC.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("OwnCars");
+                    b.Navigation("ApplicationCars");
                 });
 #pragma warning restore 612, 618
         }

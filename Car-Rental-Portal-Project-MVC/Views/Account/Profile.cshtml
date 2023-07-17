@@ -6,22 +6,22 @@
 
 <div class="row">
     <div class="col-12">
-        <h4 class="display-6">
-            Welcome To Your Profile
+        <h4 class="display-4 text-center">
+            Welcome to Your Profile
         </h4>
     </div>
     <hr />
-    <div class="col-4">
+    <div class="col-md-4">
         <div class="card">
             <div class="card-header bg-dark text-white">
-                <h5 class="text-center text-black">
+                <h5 class="text-center">
                     @Model.Username
                 </h5>
             </div>
             <div class="card-body">
                 <h6>Information:</h6>
                 <p>Username: @Model.Username</p>
-                <p>Full Name: @Model.Name @Model.LastName </p>
+                <p>Full Name: @Model.Name @Model.LastName</p>
                 <p>Email: @Model.Email</p>
                 <p>Phone: @Model.PhoneNumber</p>
             </div>
@@ -30,55 +30,55 @@
             </div>
         </div>
     </div>
-    <div class="col-8">
+    <div class="col-md-8">
         <div class="col-12">
             <h5 class="text-center display-5">
                 Your Cars
             </h5>
-            <!-- Button For Adding Cars. -->
-  @*===============        Tvini momityna am filteris Partialma da cotaxnit vakomentareb ================> *@
-           @* <div class="col-12 row">
-                <partial name="_CarFilterPartial" model="new CarFilterViewModel() {CarsToFilter = Model.OwnCars.ToList()}" />
-
-            </div>*@
         </div>
-        <div class="row">
-            @if (Model.OwnCars.Count > 0)
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @if (Model.ApplicationCars.Count > 0)
             {
-                @foreach (var car in Model.OwnCars)
+                @foreach (var car in Model.ApplicationCars)
                 {
-
-                    <div class="col-4">
-                        <img src="@car.Id" class="card-img-top" alt="Car Image">
-                        <div class="card-body">
-                            <h6 class="card-title">@car.Manufacturer | @car.Model | @car.Year</h6>
-                            <p class="card-text">@car.Description</p>
-                            @if (!string.IsNullOrWhiteSpace(car.HiredByUserId))
-                            {
-                                <p>Hired.</p>
-                            }
-                            else
-                            {
-                                <p>Open for rent.</p>
-                            }
-                        </div>
-                        <div class="card-footer">
-                            <a asp-controller="Car" asp-action="UpdateCar" asp-route-id="@car.Id" class="btn btn-warning" type="submit">Edit Car</a>
-                        </div>
-                        
-
-                        @*<form asp-controller="Car" asp-action="DeleteCar" method="post" class="needs-validation" novalidate>
-                            <div class="card-footer">
-                                <button class="btn btn-danger" type="submit">Delete Car</button>
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="@car.ImageUrl" class=" card-img-top" alt="Car Image">
+                            <div class="card-body">
+                                <h6 class="card-title">@car.Manufacturer | @car.Model | @car.Year</h6>
+                                <p class="card-text">@car.Description</p>
+                                @if (!string.IsNullOrWhiteSpace(car.HiredByUserId))
+                                {
+                                    <p>Hired.</p>
+                                }
+                                else
+                                {
+                                    <p>Open for rent.</p>
+                                }
                             </div>
-                        </form>*@
+                            <div class="card-footer">
+                                <a asp-controller="Car" asp-action="UpdateCar" asp-route-id="@car.Id" class="btn btn-warning">Edit Car</a>
+                            </div>
+                        </div>
                     </div>
                 }
-                <a style="font-size:64px;color:black; display:contents" class="bi bi-plus-square ms-1" asp-controller="Car" asp-action="AddCar"></a>
+                <div class="col">
+                    <a asp-controller="Car" asp-action="AddCar" class="profilecard card card-add">
+                        <div class="card-body">
+                            <i class="bi bi-plus-square"></i>
+                        </div>
+                    </a>
+                </div>
             }
             else
             {
-                <a style="font-size:64px; color:black; display:contents" class="bi bi-plus-square ms-1" asp-controller="Car" asp-action="AddCar"></a>
+                <div class="col">
+                    <a asp-controller="Car" asp-action="AddCar" class="profilecard card card-add"> class="card card-add">
+                        <div class="card-body">
+                            <i class="bi bi-plus-square"></i>
+                        </div>
+                    </a>
+                </div>
             }
         </div>
     </div>

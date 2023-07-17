@@ -11,7 +11,7 @@ namespace Car_Rental_Portal_Project_MVC.Models
         public string LastName { get; set; } = string.Empty;
         public DateTime UserCreatedAt { get; set; } = DateTime.Now;
         //relations
-        [ForeignKey("UserId")]
-        public ICollection<ApplicationCar> OwnCars { get; set; } = new List<ApplicationCar>();
+        [ForeignKey("ApplicationUserId")]
+        public ICollection<ApplicationCar> ApplicationCars { get; set; } = new List<ApplicationCar>();
     }
 }

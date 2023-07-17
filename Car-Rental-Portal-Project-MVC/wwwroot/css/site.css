@@ -65,3 +65,23 @@ body {
 .card-text {
     color: #6c757d; /* Set secondary text color */
 }
+.card-add {
+    width: 100%;
+    height: 100%;
+    border: 1px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    text-decoration: none;
+}
+
+    .card-add i {
+        font-size: 64px;
+    }
+.card {
+    
+}
+.profilecard {
+    height: 100%;
+}

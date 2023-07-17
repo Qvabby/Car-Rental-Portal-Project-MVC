@@ -1,23 +1,30 @@
 ﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
 @model GetCarViewModel
+
 <div class="row">
     <div class="col-md-8">
-        <img src="@Model.ImageUrl" class="img-fluid" alt="Responsive image">
-
-    </div>
-    <div class="col-md-8">
-        <h2>
-            @Model.Manufacturer | @Model.Model | @Model.Year
-        </h2>
+        <img src="@Model.ImageUrl" class="img-fluid" alt="Car Image">
     </div>
     <div class="col-md-4">
-        <h2>
-            Stuff
-        </h2>
+        <h2>@Model.Manufacturer | @Model.Model | @Model.Year</h2>
+        <hr>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Car Details</h5>
+                <p class="card-text"><strong>Price:</strong> @Model.Price</p>
+                <p class="card-text"><strong>Location:</strong> @Model.Location</p>
+                <p class="card-text"><strong>Fuel Type:</strong> @Model.FuelType</p>
+                <p class="card-text"><strong>Transmission:</strong> @Model.Transmission</p>
+                <p class="card-text"><strong>Seats:</strong> @Model.PeopleAmount</p>
+            </div>
+            <div class="card-footer">
+                <h5 class="card-title">Sellers' Info</h5>
+                <p class="card-text"><strong>User Name:</strong> @Model.ApplicationUser.Name</p>
+            </div>
+        </div>
+        <hr>
         <form method="post" asp-controller="Car" asp-action="HireCar">
-            <button class="btn btn-warning" type="submit">
-                RENT!
-            </button>
+            <button class="btn btn-warning" type="submit">Rent!</button>
         </form>
     </div>
 </div>
