@@ -85,6 +85,12 @@
     </form>
 </div>
 
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
+
+<!-- Registration form fields here -->
 @section Scripts{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

@@ -56,20 +56,27 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             //Getting Response from Services' Register Method.
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name};
-            var result = await _userManager.CreateAsync(user, model.Password);
             var response = await _accountService.Register(model);
-            if (response.success)
+            try
             {
-                //in case response was successful. (user was registered)
-                return RedirectToAction("Index", "Home");
+                if (response.success)
+                {
+                    //in case response was successful. (user was registered)
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    throw new Exception("ERROR! Something Wrong");
+
+                }
             }
-            else
+            catch (Exception ex)
             {
                 //else.
-                AddError(result);
-                return NotFound();
+                ViewBag.ErrorMessage = ex.Message;
+                return View(model);
             }
+            return View(model);
         }
         [HttpGet]
         [AllowAnonymous]
@@ -87,25 +94,37 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             ViewData["ReturnUrl"] = ReturnUrl;
             ReturnUrl = ReturnUrl ?? Url.Content("~/");
             //Checking ModelState
-            if (ModelState.IsValid)
+            try
             {
-                //Getting Response From Service Login Method
-                var response = await _accountService.LogIn(model);
-                if (response.success)
+                if (ModelState.IsValid)
                 {
-                    //If response was successful.
+                    //Getting Response From Service Login Method
+                    var response = await _accountService.LogIn(model);
+                    if (response.success)
+                    {
+                        //If response was successful.
+                        return LocalRedirect(ReturnUrl);
+                    }
+                    else if (response.Message == "LockOut")
+                    {
+                        //if we have lockout.
+                        ModelState.AddModelError(string.Empty, response.Description);
+                        return View(response.Data);
+                    }
                     return LocalRedirect(ReturnUrl);
                 }
-                else if (response.Message == "LockOut")
+                else
                 {
-                    //if we have lockout.
-                    ModelState.AddModelError(string.Empty, response.Description);
-                    return View(response.Data);
+                    throw new Exception("ERROR! Something Wrong");
                 }
-                return LocalRedirect(ReturnUrl);
             }
-            //else.
-            return NotFound();
+            catch (Exception ex)
+            {
+                //else.
+                ViewBag.ErrorMessage = ex.Message;
+                return View(model);
+            }
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> LogOut()
