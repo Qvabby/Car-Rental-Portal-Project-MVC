@@ -56,6 +56,8 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             //Getting Response from Services' Register Method.
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Name = model.Name};
+            var result = await _userManager.CreateAsync(user, model.Password);
             var response = await _accountService.Register(model);
             if (response.success)
             {
@@ -65,6 +67,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             else
             {
                 //else.
+                AddError(result);
                 return NotFound();
             }
         }
@@ -99,6 +102,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
                     ModelState.AddModelError(string.Empty, response.Description);
                     return View(response.Data);
                 }
+                return LocalRedirect(ReturnUrl);
             }
             //else.
             return NotFound();
