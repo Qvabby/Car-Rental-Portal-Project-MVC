@@ -2,19 +2,36 @@
 @using Microsoft.AspNetCore.Mvc.Rendering
 @model List<GetCarViewModel>
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
-<div class="container-fluid" style="background: linear-gradient(to right, #010621, #1C2340);">
+<div style="background: linear-gradient(to right, #010621, #1C2340)">
+    <div class="container text-center MAINPAGECONTAINER" style="background: linear-gradient(to right, #03092a, #121934)">
 
-    <div class="text-center MAINPAGECONTAINER p-2" style="background: #0b0030;">
         <div class="row justify-content-center">
-            <div class="col-12" style="background: linear-gradient(to right, #010621, #1C2340); color:darkorange">
+            <div class="col-12" style="color:darkorange">
                 <h1 class="display-4">Car Rental</h1>
             </div>
         </div>
- 
+
+        <hr class="my-4" style="color:darkorange" />
 
         <div class="row justify-content-center">
+            <div class="rounded-2 col-md-10 bg-dark text-white p-2">
+                <partial name="_CarFilterPartial" model="new CarFilterViewModel() {CarsToFilter = Model}" />
+            </div>
+        </div>
+
+        <hr class="my-4" style="color:darkorange" />
+
+        <div class="row justify-content-center">
+            <partial name="CarCard_Partial" model="Model" />
+        </div>
+    </div>
+</div>
+
+
+
+@*<div class="row justify-content-center">
             <div class="col-md-12">
                 @*<div class="banner-image">
                     <img src="https://www.supercars.net/blog/wp-content/uploads/2020/09/wallpaperflare.com_wallpaper-1-1.jpg" alt="Image here" class="img-fluid image-container" />
@@ -23,18 +40,6 @@
                         <p class="lead col-md-12">
                             Whether you're planning a weekend getaway, embarking on a thrilling road trip, or simply looking for a reliable set of wheels for your daily commute, we've got you covered. Explore our extensive selection of top-notch vehicles, register to rent your own cars, and enjoy a seamless and satisfying rental experience.
                         </p>
-                    </div>*@               
+                    </div>
             </div>
-        </div>
-        <hr class="my-4" style="color:darkorange" />
-        <div class="row justify-content-center" style="background: #010621;">
-            <div class="col-md-10 bg-dark text-white p-3">
-                <partial name="_CarFilterPartial" model="new CarFilterViewModel() {CarsToFilter = Model}" />
-            </div>
-        </div>
-        <hr class="my-4" />
-        <div class="row justify-content-center">
-            <partial name="CarCard_Partial" model="Model" />
-        </div>
-    </div>
-</div>
+        </div>*@
