@@ -23,5 +23,6 @@ namespace Car_Rental_Portal_Project_MVC.Services.Interfaces
         Task<ServiceResponse<GetCarViewModel>> RentCar(GetCarViewModel model);
         //post
         Task<ServiceResponse<GetCarViewModel>> HireCar(GetCarViewModel model);
+        Task<ServiceResponse<GetCarViewModel>> LikeCar(string userId, int carId);
     }
 }

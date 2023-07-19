@@ -9,6 +9,7 @@ using Google.Apis.Gmail.v1;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Security.Claims;
@@ -260,6 +261,40 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
         public Task<ServiceResponse<ProfileViewModel>> Edit(ProfileViewModel model)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ServiceResponse<GetCarViewModel>> LikeCar(string userId, int carId)
+        {
+            var response = new ServiceResponse<GetCarViewModel>();
+
+            //var user = await _userManager.FindByIdAsync(userId);
+
+            var user = await _db.AplicationUsers.Where(x => x.Id == userId).FirstOrDefaultAsync();
+            var car = await _db.ApplicationCars.FindAsync(carId);
+
+
+            if (user == null)
+            {
+                response.success = false;
+                response.Message = "User not found.";
+            }
+            if (user.LikedCars.Contains(carId))
+            {
+                response.success = false;
+                response.Message = "You have already liked this car.";
+                return response;
+            }
+            
+            if (car == null)
+            {
+                response.success = false;
+                response.Message = "Car not found.";
+                return response;
+            }
+
+            //IDK WHAT TO DO 
+            return response;
+
         }
     }
 }

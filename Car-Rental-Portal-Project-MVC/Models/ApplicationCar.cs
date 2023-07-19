@@ -48,5 +48,6 @@ namespace Car_Rental_Portal_Project_MVC.Models
         //relations
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; } = null!;
+        public ICollection<int?> Likes { get; set; } = new List<int?>();
     }
 }

@@ -16,6 +16,7 @@ namespace Car_Rental_Portal_Project_MVC.Models.ViewModels.Account
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public List<GetCarViewModel> ApplicationCars { get; set; }
+        public ICollection<int> LikedCars { get; set; } = new List<int>();
 
     }
 }
