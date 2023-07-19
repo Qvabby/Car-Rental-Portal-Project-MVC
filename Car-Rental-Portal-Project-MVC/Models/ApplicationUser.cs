@@ -13,5 +13,6 @@ namespace Car_Rental_Portal_Project_MVC.Models
         //relations
         [ForeignKey("ApplicationUserId")]
         public ICollection<ApplicationCar> ApplicationCars { get; set; } = new List<ApplicationCar>();
+        public ICollection<RentOrder> RentOrders { get; set; } = new List<RentOrder>();
     }
 }

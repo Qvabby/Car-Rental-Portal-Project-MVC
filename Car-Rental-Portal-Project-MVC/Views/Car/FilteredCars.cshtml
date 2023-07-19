@@ -2,14 +2,14 @@
 @model List<GetCarViewModel>
 
 <div class="row" style="background: linear-gradient(to right, #010621, #1C2340);">
-    <div class="col-md-4">
+    <div class="col-lg-6">
         <div class="card mb-4">
             <div class="card-body">
                 <partial name="_CarFilterPartial" model="new CarFilterViewModel()" />
             </div>
         </div>
     </div>
-    <div class="col-md-8 ">
+    <div class="col-lg-6 ">
         <div class="row">
             @foreach (var car in Model)
             {
@@ -17,11 +17,11 @@
                     <div class="card h-100">
                         <img src="@car.ImageUrl" class="card-img-top" alt="Car Image">
                         <div class="card-body row">
-                            <div class="col-md-9">
+                            <div class="col-md-8">
                                 <h5 class="card-title">@car.Manufacturer | @car.Model | @car.Price</h5>
                             </div>
-                            <div class="col-md-3">
-                                <a asp-controller="Car" asp-action="CarPage" asp-route-id="@car.Id" class="btn btn-success">View</a>
+                            <div class="col-md-4">
+                                <a asp-controller="Car" asp-action="CarPage" asp-route-id="@car.Id" class="btn btn-outline-warning">View</a>
                             </div>
                         </div>
                     </div>

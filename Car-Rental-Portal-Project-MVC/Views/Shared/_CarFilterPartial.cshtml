@@ -30,7 +30,7 @@
         <div class="form-group col-md-3">
             <label asp-for="Transmission">Transmission</label>
             <select asp-for="Transmission" class="form-control form-control-sm" required>
-                <option value="" selected > </option>
+                <option value="" selected >Transmission</option>
                 @foreach (var transmissionValue in Enum.GetValues(typeof(TransmissionEnum)))
                 {
                     <option value="@transmissionValue">@transmissionValue.ToString()</option>
@@ -40,7 +40,7 @@
         <div class="form-group col-md-3">
             <label asp-for="FuelType">Fuel Type</label>
             <select asp-for="FuelType" class="form-control form-control-sm" id="validationTooltip07" required>
-                <option value="" selected > </option>
+                <option value="" selected >Fuel Type</option>
                 @foreach (var fuelTypeValue in Enum.GetValues(typeof(FuelTypeEnum)))
                 {
                     <option value="@fuelTypeValue">@fuelTypeValue.ToString()</option>
@@ -57,7 +57,7 @@
         <div class="form-group col-md-3">
             <label asp-for="WheelType">Wheel Type</label>
             <select class="form-control form-control-sm" asp-for="WheelType" required>
-                <option value="" selected > </option>
+                <option value="" selected>Wheel Type</option>
                 @foreach (var WheelTypeValue in Enum.GetValues(typeof(WheelTypeEnum)))
                 {
                     <option value="@WheelTypeValue">@WheelTypeValue.ToString()</option>

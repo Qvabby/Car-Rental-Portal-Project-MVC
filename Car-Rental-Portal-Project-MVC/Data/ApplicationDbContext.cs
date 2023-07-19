@@ -10,6 +10,7 @@ namespace Car_Rental_Portal_Project_MVC.Data
         {
             
         }
+        public DbSet<RentOrder> RentOrders { get; set; }
         public DbSet<ApplicationUser> AplicationUsers { get; set; }
         public DbSet<ApplicationCar> ApplicationCars => Set<ApplicationCar>();
     }
