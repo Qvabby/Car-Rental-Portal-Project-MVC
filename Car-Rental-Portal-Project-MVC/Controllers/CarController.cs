@@ -4,6 +4,7 @@ using Car_Rental_Portal_Project_MVC.Models.Enums;
 using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
 using Car_Rental_Portal_Project_MVC.Services;
 using Car_Rental_Portal_Project_MVC.Services.Interfaces;
+using identityStep;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -132,19 +133,19 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             ModelState.AddModelError("Error", $"Failed to update car: {response.Message}");
             return View(car);
         }
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> DeleteCar(int id)
         {
             var response = await _carService.DeleteCar(id);
 
             if (response.success)
             {
-                return RedirectToAction("Profile", "Account");
+                 return RedirectToAction("Profile", "Account");
             }
             else
             {
                 ModelState.AddModelError("Error", response.Message);
-                return View(); 
+                return View();
 
             }
         }
