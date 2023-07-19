@@ -289,6 +289,38 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult Edit()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditAsync(ProfileViewModel model)
+        {
+            var response = await _accountService.Edit(model);
+            try
+            {
+                if (response.success)
+                {
+                    //in case response was successful. (user was registered)
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    throw new Exception("ERROR! Something Wrong");
+                }
+            }
+            catch (Exception ex)
+            {
+                //else.
+                ViewBag.ErrorMessage = ex.Message;
+                return View(model);
+            }
+            return View(model);
+        }
+
         private void AddError(IdentityResult result)
         {
             foreach (var Error in result.Errors)
