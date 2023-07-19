@@ -24,7 +24,7 @@
                 </div>
                 <div class="card-group">
                     <label class="text-muted font-size-medium">Full Name:</label>
-                    <p class="form-text font-size-small text-left">@Model.LastName</p>
+                    <p class="form-text font-size-small text-left">@Model.Name @Model.LastName</p>
                 </div>
                 <div class="card-group">
                     <label class="text-muted font-size-medium">Email:</label>
@@ -36,8 +36,9 @@
                 </div>
             </div>
             <div class="card-footer">
-                <a href="#" class="btn btn-primary">Edit Profile</a>
-            </div>
+                <a asp-action="Edit" asp-controller="Account" class="btn btn-info text-white">Edit</a>
+@*                <a href="#" class="btn btn-primary">Edit Profile</a> *@
+</div>
         </div>
     </div>
 

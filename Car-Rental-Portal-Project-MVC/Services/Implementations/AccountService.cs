@@ -256,5 +256,10 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
         {
             throw new NotImplementedException();
         }
+
+        public Task<ServiceResponse<ProfileViewModel>> Edit(ProfileViewModel model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
