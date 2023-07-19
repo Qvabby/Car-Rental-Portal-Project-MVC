@@ -39,7 +39,10 @@ namespace Car_Rental_Portal_Project_MVC.Models
         public string Location { get; set; }
         [Required]
         public int PeopleAmount { get; set; }
+        //RENTAL
         public string? HiredByUserId { get; set; }
+        public DateTime? HiredFrom { get; set; }
+        public DateTime? HiredTo { get; set; }
         //for view
         public string? Description { get; set; }
         //relations

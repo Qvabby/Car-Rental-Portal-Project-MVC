@@ -50,13 +50,6 @@
                 <select asp-for="Transmission" asp-items="@Model.TransmissionList" class="form-control">
                     <option disabled selected> -- select role --</option>
                 </select>
-
-
-                @*<label asp-for="Transmission"></label>
-                <input asp-for="Transmission" type="text" class="form-control" />
-                <span asp-validation-for="Transmission" class="text-danger"></span>*@
-
-
             </div>
 
             <div class="form-group">
@@ -64,15 +57,17 @@
                 <select asp-for="FuelType" asp-items="@Model.FuelTypeList" class="form-control">
                     <option disabled selected> -- select role --</option>
                 </select>
-                @*<label asp-for="FuelType">FuelType</label>
-                <input asp-for="FuelType" class="form-control" />
-                <span asp-validation-for="FuelType" class="text-danger"></span>*@
             </div>
 
             <div class="form-group">
-                <label asp-for="FuelTank">FuelTank</label>
+                <label asp-for="FuelTank">Fuel Tank</label>
                 <input asp-for="FuelTank" class="form-control" />
                 <span asp-validation-for="FuelTank" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PeopleAmount">Seats</label>
+                <input asp-for="PeopleAmount" class="form-control" />
+                <span asp-validation-for="PeopleAmount" class="text-danger"></span>
             </div>
 
             <div class="form-group">
@@ -80,10 +75,6 @@
                 <select asp-for="WheelType" asp-items="@Model.WheelTypeList" class="form-control">
                     <option disabled selected> -- select role --</option>
                 </select>
-
-                @*<label asp-for="WheelType">WheelType</label>
-                <input asp-for="WheelType" class="form-control" />
-                <span asp-validation-for="WheelType" class="text-danger"></span>*@
             </div>
 
             <div class="form-group">

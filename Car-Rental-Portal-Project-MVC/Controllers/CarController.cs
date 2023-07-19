@@ -75,7 +75,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             var user = await _db.AplicationUsers.FirstOrDefaultAsync(x => x.Id == UserId);
             if (user != null)
             {
-                ModelState.Root.Children[12].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
+                ModelState.Root.Children[13].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
             }
             viewModel.ApplicationUserId = UserId;
             viewModel.ApplicationUser = user;
