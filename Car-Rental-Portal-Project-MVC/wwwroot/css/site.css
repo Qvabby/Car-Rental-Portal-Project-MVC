@@ -153,9 +153,55 @@ body {
     font-weight: bold;
 }
 .ProfCard {
-    /*background: linear-gradient:#01001f;*/
+  
     background-color: #020121 !important;
     border-radius: 10px;
     color: wheat;
     font-family: "Arial", sans-serif;
+}
+
+
+.CarCard {
+    background-color: #00000d;
+    border-radius: 10px;
+    color: white;
+    font-family: "Arial", sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+.CarCard:hover {
+        transform: scale(1.05);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.card-text {
+    font-size: 14px;
+}
+
+.btn {
+    font-size: 14px;
+}
+
+.CarAddCard {
+    background-color: #020121;
+    border-radius: 10px;
+    color: white;
+    font-size: 24px;
+    font-family: "Arial", sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.CarAddCard:hover {
+        transform: scale(1.05);
+}
+
+.card-body {
+    padding: 0.5rem;
+    text-align: center;
 }
