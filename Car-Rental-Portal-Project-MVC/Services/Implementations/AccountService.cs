@@ -273,24 +273,24 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
             var car = await _db.ApplicationCars.FindAsync(carId);
 
 
-            if (user == null)
-            {
-                response.success = false;
-                response.Message = "User not found.";
-            }
-            if (user.LikedCars.Contains(carId))
-            {
-                response.success = false;
-                response.Message = "You have already liked this car.";
-                return response;
-            }
+            //if (user == null)
+            //{
+            //    response.success = false;
+            //    response.Message = "User not found.";
+            //}
+            //if (user.LikedCars.Contains(carId))
+            //{
+            //    response.success = false;
+            //    response.Message = "You have already liked this car.";
+            //    return response;
+            //}
             
-            if (car == null)
-            {
-                response.success = false;
-                response.Message = "Car not found.";
-                return response;
-            }
+            //if (car == null)
+            //{
+            //    response.success = false;
+            //    response.Message = "Car not found.";
+            //    return response;
+            //}
 
             //IDK WHAT TO DO 
             return response;

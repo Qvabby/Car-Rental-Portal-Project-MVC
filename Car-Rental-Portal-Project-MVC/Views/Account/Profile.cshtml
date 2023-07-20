@@ -8,43 +8,43 @@
 
 <div class="row mb-4">
     <div class="col-12 text-white">
-        <h4 class="display-4 text-center">Welcome to Your Profile</h4>
+        <h4 class="HH2AddCar display-4 text-center">This is Your Profile</h4>
     </div>
     <hr class="text-white">
 </div>
 
 <div class="row mb-4">
-    <div class="col-lg-4">
-        <div class="card text-center">
+    <div class="col-lg-4 ">
+        <div class="ProfCard card text-center ">
             <div class="card-header">
-                <h5 class="card-title">Profile Information</h5>
+                <h5 class="card-title">Profile Information <i class="bi bi-person-circle"></i> </h5>
             </div>
             <div class="card-body">
                 <div class="card-group">
-                    <label class="text-muted font-size-large">Username:</label>
-                    <p class="form-text font-size-medium text-left">@Model.Username</p>
+                    <label class="text-muted font-size-large">Username : </label>
+                    <p class="form-text font-size-medium text-left"> @Model.Username</p>
                 </div>
                 <div class="card-group">
-                    <label class="text-muted font-size-medium">Full Name:</label>
-                    <p class="form-text font-size-small text-left">@Model.Name @Model.LastName</p>
+                    <label class="text-muted font-size-medium">Full Name : </label>
+                    <p class="form-text font-size-small text-left"> @Model.Name @Model.LastName</p>
                 </div>
                 <div class="card-group">
-                    <label class="text-muted font-size-medium">Email:</label>
-                    <p class="form-text font-size-small text-left">@Model.Email</p>
+                    <label class="text-muted font-size-medium">Email : </label>
+                    <p class="form-text font-size-small text-left"> @Model.Email</p>
                 </div>
                 <div class="card-group">
-                    <label class="text-muted font-size-medium">Phone:</label>
-                    <p class="form-text font-size-small text-left">@Model.PhoneNumber</p>
+                    <label class="text-muted font-size-medium">Phone : </label>
+                    <p class="form-text font-size-small text-left"> @Model.PhoneNumber</p>
                 </div>
             </div>
             <div class="card-footer">
                 <a asp-action="Edit" asp-controller="Account" class="btn btn-info text-white">Edit</a>
 @*                <a href="#" class="btn btn-primary">Edit Profile</a> *@
-</div>
+            </div>
         </div>
     </div>
 
-    /
+
     <h4>Liked Cars</h4>
     <ul>
         @foreach (var carId in Model.LikedCars)

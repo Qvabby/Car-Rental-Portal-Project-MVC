@@ -1,101 +1,105 @@
 ﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
 @model AddCarViewModel
 
-<h2>Add Your Car.</h2>
+<center>
+    <h2 class="HH2AddCar">Add Your Car </h2>
+    
+    </center>
 
-<div class="form">
-    <form asp-controller="Car" asp-action="AddCar" class="form-control" method="post" class="form">
+<div class="form FFdiv">
+    <form asp-controller="Car" asp-action="AddCar" method="post" class="form-control FFdiv">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group row">
-            <input asp-for="ApplicationUserId"  />
-            <input asp-for="ApplicationUser"  />
-            <div class="form-group">
+            <div class="col-md-6">
                 <label asp-for="Manufacturer">Manufacturer</label>
                 <input asp-for="Manufacturer" class="form-control" />
                 <span asp-validation-for="Manufacturer" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="col-md-6">
                 <label asp-for="ImageUrl">Picure Url</label>
                 <input asp-for="ImageUrl" class="form-control" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="col-md-6">
                 <label asp-for="Model">Model</label>
                 <input asp-for="Model" class="form-control" />
                 <span asp-validation-for="Model" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="col-md-6">
                 <label asp-for="Year">Year</label>
                 <input asp-for="Year" class="form-control" />
                 <span asp-validation-for="Year" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="col-md-6">
                 <label asp-for="Price">Price</label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="col-md-6">
                 <label asp-for="Engine">Engine</label>
                 <input asp-for="Engine" class="form-control" />
                 <span asp-validation-for="Engine" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="col-md-6">
                 <label asp-for="Transmission">Transmission</label>
                 <select asp-for="Transmission" asp-items="@Model.TransmissionList" class="form-control">
                     <option disabled selected> -- select role --</option>
                 </select>
             </div>
 
-            <div class="form-group">
+            <div class="col-md-6">
                 <label asp-for="FuelType">Fuel Type</label>
                 <select asp-for="FuelType" asp-items="@Model.FuelTypeList" class="form-control">
                     <option disabled selected> -- select role --</option>
                 </select>
             </div>
 
-            <div class="form-group">
+            <div class="col-md-6">
                 <label asp-for="FuelTank">Fuel Tank</label>
                 <input asp-for="FuelTank" class="form-control" />
                 <span asp-validation-for="FuelTank" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="col-md-6">
                 <label asp-for="PeopleAmount">Seats</label>
                 <input asp-for="PeopleAmount" class="form-control" />
                 <span asp-validation-for="PeopleAmount" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="col-md-6">
                 <label asp-for="WheelType">Wheel Type</label>
                 <select asp-for="WheelType" asp-items="@Model.WheelTypeList" class="form-control">
                     <option disabled selected> -- select role --</option>
                 </select>
             </div>
 
-            <div class="form-group">
+            <div class="col-md-6">
                 <label asp-for="Location">Location</label>
                 <input asp-for="Location" class="form-control" />
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="col-md-6">
                 <label asp-for="Description">Description</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
-            <div class="form-group mt-3">
-                <button type="submit" class="btn btn-success form-control">Add Car</button>
+            <div class="form-group mt-3 col-md-12">
+                @*<button type="submit" class="btn btn-success form-control">Add Car <i class="fas fa-car"></i></button>*@
+                <a class="btn btn-success form-control"><i class="fas fa-car">Add Car</i></a>
             </div>
 
         </div>
     </form>
 </div>
+
 
 @section Scripts{
     @{
