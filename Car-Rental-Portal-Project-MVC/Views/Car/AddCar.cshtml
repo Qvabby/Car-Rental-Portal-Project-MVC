@@ -3,13 +3,14 @@
 
 <center>
     <h2 class="HH2AddCar">Add Your Car </h2>
-    
-    </center>
-
+  
+</center>
 <div class="form FFdiv">
-    <form asp-controller="Car" asp-action="AddCar" method="post" class="form-control FFdiv">
+    <form asp-controller="Car" asp-action="AddCar" method="post" class="form-control">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group row">
+             <input asp-for="ApplicationUserId" hidden/>
+            <input asp-for="ApplicationUser" hidden/>
             <div class="col-md-6">
                 <label asp-for="Manufacturer">Manufacturer</label>
                 <input asp-for="Manufacturer" class="form-control" />
@@ -92,8 +93,7 @@
             </div>
 
             <div class="form-group mt-3 col-md-12">
-                @*<button type="submit" class="btn btn-success form-control">Add Car <i class="fas fa-car"></i></button>*@
-                <a class="btn btn-success form-control"><i class="fas fa-car">Add Car</i></a>
+                <button type="submit" class="btn btn-success form-control">Add Car</button>
             </div>
 
         </div>
