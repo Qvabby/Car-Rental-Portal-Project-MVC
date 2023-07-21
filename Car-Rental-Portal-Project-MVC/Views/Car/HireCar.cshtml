@@ -1,0 +1,23 @@
+﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
+@model HireCarViewModel
+
+
+<form class="form-control FFdiv" asp-action="HireCar" asp-controller="Car" method="post" style="width:100%;">
+    <div class="row justify-content-center">
+        <input asp-for="CarId" hidden />
+        <input asp-for="UserId" hidden />
+        <div class="col-md-6">
+            <label asp-for="HiredFrom">Hired From</label>
+            <input asp-for="HiredFrom" class="form-control" />
+            <span asp-validation-for="HiredFrom" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="HiredTo">Hired To</label>
+            <input asp-for="HiredTo" class="form-control" />
+            <span asp-validation-for="HiredTo" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-outline-success mt-1" type="submit" style="width:100%;"> Rent </button>
+        </div>
+    </div>
+</form>

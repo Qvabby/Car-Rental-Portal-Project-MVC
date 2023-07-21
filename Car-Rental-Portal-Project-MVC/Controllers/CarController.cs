@@ -28,7 +28,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> CarPage(int id)
         {
-            var car = _mapper.Map<GetCarViewModel>( 
+            var car = _mapper.Map<GetCarViewModel>(
                 await _db.ApplicationCars
                 .Include(x => x.ApplicationUser)
                 .FirstOrDefaultAsync(x => x.Id == id));
@@ -110,7 +110,8 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
                 return FilteredCars(response.Data);
             }
             return NotFound();
-        }public IActionResult FilteredCars(List<GetCarViewModel> data)
+        }
+        public IActionResult FilteredCars(List<GetCarViewModel> data)
         {
             return View(data);
         }
@@ -140,7 +141,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
 
             if (response.success)
             {
-                 return RedirectToAction("Profile", "Account");
+                return RedirectToAction("Profile", "Account");
             }
             else
             {
@@ -148,6 +149,32 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
                 return View();
 
             }
+        }
+        [HttpGet]
+        public async Task<IActionResult> HireCar(int id)
+        {
+            var model = new HireCarViewModel()
+            {
+                CarId = id,
+                UserId = await _userManager.GetUserIdAsync(await _userManager.GetUserAsync(User)),
+                HiredFrom = DateTime.Now,
+                HiredTo = DateTime.Now,
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> HireCar(HireCarViewModel viewmodel)
+        {
+            var response = await _carService.HireCar(viewmodel);
+            if (response.success && response.Data != null)
+            {
+                return RedirectToAction("Profile", "Account");
+            }
+            else if (response.Message == "HIRED")
+            {
+                return View();
+            }
+            return NotFound();
         }
     }
 }

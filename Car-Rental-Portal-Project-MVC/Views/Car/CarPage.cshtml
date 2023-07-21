@@ -1,4 +1,6 @@
 ﻿@using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<IdentityUser> _usermanager;
 @model GetCarViewModel
 
 <div class="row" style="background: linear-gradient(to right, #010621, #1C2340); color:white;">
@@ -6,11 +8,11 @@
         <img src="@Model.ImageUrl" class="img-fluid" alt="Car Image">
     </div>
     <div class="col-md-4 p-3" style="background:#010621;">
-        <h2 style=" color:darkorange;">@Model.Manufacturer | @Model.Model | @Model.Year</h2> 
+        <h2 style=" color:darkorange;">@Model.Manufacturer | @Model.Model | @Model.Year</h2>
         <a class="btn btn-outline-danger"><i class="bi bi-heart"></i></a>
         <hr>
         <div class="card" style="background:#010621;">
-            <div class="card-body" >
+            <div class="card-body">
                 <h5 class="card-title">Car Details</h5>
                 <p class="card-text"><strong>Price:</strong> @Model.Price</p>
                 <p class="card-text"><strong>Location:</strong> @Model.Location</p>
@@ -30,8 +32,16 @@
             </div>
         </div>
         <hr>
-        <form method="post" asp-controller="Car" asp-action="HireCar">
-            <button class="btn btn-outline-warning" type="submit">Rent!</button>
-        </form>
+        @if (Model.ApplicationUserId == _usermanager.GetUserId(User))
+        {
+            <p>You Own This Car.</p>
+        }else if (!string.IsNullOrWhiteSpace(Model.HiredByUserId))
+        {
+            <p>Hired Till @Model.HiredTo</p>
+        }
+        else
+        {
+            <a asp-controller="Car" asp-action="HireCar" asp-route-id="@Model.Id" class="btn btn-outline-warning" type="submit">Rent!</a>
+        }
     </div>
 </div>

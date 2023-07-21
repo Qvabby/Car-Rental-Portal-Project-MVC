@@ -141,10 +141,17 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             var userid = await _userManager.GetUserIdAsync(await _userManager.GetUserAsync(User));
 
             var user = await _db.AplicationUsers
+                .Include(x=>x.RentOrders)
                 .Include(u => u.ApplicationCars)
                 .FirstOrDefaultAsync(x => x.Id == userid);
-            
+            var RentOrders = await _db.RentOrders
+                .Include(x => x.ApplicationCar)
+                .Include(x => x.ApplicationUser)
+                .Where(x => x.ApplicationUser == user)
+                .ToListAsync();
+                
             var UserModel = _mapper.Map<ProfileViewModel>(user);
+            UserModel.RentOrders = RentOrders;
             return View(UserModel);
         }
         [HttpGet]

@@ -96,15 +96,40 @@
                 }
 
             }
-            else
+
+
+
+            @if (Model.RentOrders != null)
             {
-                <div class="col-md-4 col-sm-6">
-                    <a asp-controller="Car" asp-action="AddCar" class="profilecard card card-add CarAddCard">
-                        <div class="card-body">
-                            <i class="bi bi-plus-square"></i>
-                        </div>
-                    </a>
+                <hr />
+                <div class="col-12 text-white">
+                    <h5 class="text-center display-5">Your Hired Cars</h5>
                 </div>
+                @foreach (var Order in Model.RentOrders)
+                {
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="card h-100 CarCard">
+                            <img src="@Order.ApplicationCar.ImageUrl" class="card-img-top CARIMAGETOPCARD" alt="Car Image">
+                            <div class="card-body CarBody">
+                                <h6 class="card-title">@Order.ApplicationCar.Manufacturer | @Order.ApplicationCar.Model | @Order.ApplicationCar.Year</h6>
+                                <p class="card-text">@Order.ApplicationCar.Description</p>
+                                @if (!string.IsNullOrWhiteSpace(Order.ApplicationCar.HiredByUserId))
+                                {
+                                    <p class="text-danger">Hired.</p>
+                                }
+                                else
+                                {
+                                    <p class="text-success">Open for rent.</p>
+                                }
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="row">
+                                    <p><strong>Cost:</strong> @Order.Cost</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
             }
 
             @*<h4>Liked Cars</h4>

@@ -4,9 +4,9 @@
     {
         public int id { get; set; }
         public string RentedByUserId { get; set; }
-
+        public decimal Cost { get; set; }
         //Relations
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public int CarId { get; set; }
         public ApplicationCar ApplicationCar { get; set; }

@@ -8,6 +8,8 @@ using Car_Rental_Portal_Project_MVC.Data;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Google.Apis.Gmail.v1.Data;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 public class CarService : ICarService
 {
@@ -205,6 +207,58 @@ public class CarService : ICarService
         }
 
         return response;
+    }
+
+    public async Task<ServiceResponse<RentOrder>> HireCar(HireCarViewModel viewmodel)
+    {
+        var response = new ServiceResponse<RentOrder>();
+        try
+        {
+            var CarToHire = await _dbContext.ApplicationCars
+                .Include(x => x.ApplicationUser)
+                .FirstOrDefaultAsync(x => x.Id == viewmodel.CarId);
+            var userid = viewmodel.UserId;
+
+            if (!string.IsNullOrWhiteSpace(CarToHire.HiredByUserId))
+            {
+                response.Message = "HIRED";
+                response.Description = "Car has been already hired you can't hire an already hired car.";
+                return response;
+            }
+            else if (CarToHire.ApplicationUserId == userid)
+            {
+                response.Message = "YOURCAR";
+                response.Description = "You Can't Hire Your Own Car Bitch ass Nigga.";
+                return response;
+            }
+
+            CarToHire.HiredByUserId = userid;
+            CarToHire.HiredFrom = viewmodel.HiredFrom;
+            CarToHire.HiredTo = viewmodel.HiredTo;
+            var hireddaysamount = (viewmodel.HiredTo - viewmodel.HiredFrom).TotalDays;
+            decimal TotalCost = Convert.ToDecimal(hireddaysamount) * CarToHire.Price;
+            response.Data = new RentOrder()
+            {
+                Cost = TotalCost,
+                RentedByUserId = CarToHire.ApplicationUserId,
+                UserId = userid,
+                ApplicationUser = await _dbContext.AplicationUsers.FirstOrDefaultAsync(x => x.Id == userid),
+                CarId = CarToHire.Id,
+                ApplicationCar = CarToHire,
+            };
+            await _dbContext.RentOrders.AddAsync(response.Data);
+            await _dbContext.SaveChangesAsync();
+            response.Message = "successfully CreatedOrder.";
+            response.Description = "Successfully Created Order of the Car rent.";
+            return response;
+        }
+        catch (Exception ex)
+        {
+            response.success = false;
+            response.Message = ex.Message;
+            response.Description = ex.InnerException.ToString();
+            return response;
+        }
     }
 
     public async Task<ServiceResponse<GetCarViewModel>> UpdateCar(UpdateCarViewModel car)
