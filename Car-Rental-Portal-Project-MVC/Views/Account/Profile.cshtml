@@ -46,17 +46,7 @@
     </div>
 
 
-    <h4>Liked Cars</h4>
-    <ul>
-        @foreach (var carId in Model.LikedCars)
-        {
-            var car = await _db.ApplicationCars.FindAsync(carId);
-            if (car != null)
-            {
-                <li>@car.Manufacturer</li>
-            }
-        }
-    </ul>
+
 
     <div class="col-lg-8">
         <div class="col-12 text-white">
@@ -116,6 +106,20 @@
                     </a>
                 </div>
             }
+
+            @*<h4>Liked Cars</h4>
+            <ul>
+            @foreach (var carId in Model.LikedCars)
+            {
+            var car = await _db.ApplicationCars.FindAsync(carId);
+            if (car != null)
+            {
+            <li>@car.Manufacturer</li>
+            }
+            }
+            </ul>*@
+
+
         </div>
     </div>
 </div>
