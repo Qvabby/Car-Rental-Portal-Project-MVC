@@ -5,6 +5,7 @@ using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
 using Car_Rental_Portal_Project_MVC.Services;
 using Car_Rental_Portal_Project_MVC.Services.Interfaces;
 using identityStep;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Car_Rental_Portal_Project_MVC.Controllers
 {
+    [Authorize]
     public class CarController : Controller
     {
         private readonly ICarService _carService;
@@ -26,6 +28,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> CarPage(int id)
         {
             var car = _mapper.Map<GetCarViewModel>(
