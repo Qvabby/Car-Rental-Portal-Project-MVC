@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Car_Rental_Portal_Project_MVC.Models;
+using Car_Rental_Portal_Project_MVC.Models.ViewModels.Car;
 
 namespace Car_Rental_Portal_Project_MVC.Controllers
 {
@@ -297,7 +298,7 @@ namespace Car_Rental_Portal_Project_MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditAsync(ProfileViewModel model)
+        public async Task<IActionResult> Edit(ProfileViewModel model)
         {
             var response = await _accountService.Edit(model);
             try

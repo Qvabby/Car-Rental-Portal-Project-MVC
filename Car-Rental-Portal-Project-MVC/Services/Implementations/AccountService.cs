@@ -258,9 +258,48 @@ namespace Car_Rental_Portal_Project_MVC.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<ProfileViewModel>> Edit(ProfileViewModel model)
+        public async Task<ServiceResponse<ProfileViewModel>> Edit(ProfileViewModel user)
         {
-            throw new NotImplementedException();
+            var response = new ServiceResponse<ProfileViewModel>();
+
+            try
+            {
+                //check on the User 
+                if (user == null)
+                {
+                    response.success = false;
+                    response.Message = "Invalid User data.";
+                    return response;
+                }
+
+                // Retrieve the existing car from the database
+                var existinguser = await _db.AplicationUsers.FindAsync(user.Email);
+
+                if (existinguser == null)
+                {
+                    response.success = false;
+                    response.Message = "User not found.";
+                    return response;
+                }
+
+                // Update the properties of the existing car entity with the new values from the view model
+                _mapper.Map(user, existinguser);
+                // Save the changes to the database
+                await _db.SaveChangesAsync();
+
+                // Map the updated car entity back to the view model
+                var updatedProfileViewModel = _mapper.Map<ProfileViewModel>(existinguser);
+
+                response.Data = updatedProfileViewModel;
+                response.Message = "User updated successfully.";
+            }
+            catch (Exception ex)
+            {
+                response.success = false;
+                response.Message = $"An error occurred while updating the User: {ex.Message}";
+            }
+
+            return response;
         }
 
         public async Task<ServiceResponse<GetCarViewModel>> LikeCar(string userId, int carId)
